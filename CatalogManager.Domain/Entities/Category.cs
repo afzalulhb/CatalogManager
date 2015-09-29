@@ -16,5 +16,15 @@ namespace CatalogManager.Domain.Entities
 
         public virtual ICollection<Product> Products { get; set; }
 
+        public void AddProduct(Product product)
+        {
+            Products.Add(product);
+        }
+
+        public void RemoveProduct(Product product)
+        {
+            Products.Remove(product);
+        }
+
     }
 }
