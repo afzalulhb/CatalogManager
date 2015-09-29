@@ -1,4 +1,5 @@
 ﻿
+using CatalogManager.Domain.Entities;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 namespace CatalogManager.Infrastructure
@@ -15,6 +16,8 @@ namespace CatalogManager.Infrastructure
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Entity<Category>().ToTable("Category");
+            modelBuilder.Entity<Product>().ToTable("Product");
         }
     }
 }

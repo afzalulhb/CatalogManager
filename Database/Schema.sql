@@ -21,7 +21,7 @@ GO
 CREATE TABLE [dbo].[Category](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [varchar](200) NULL,
-	[ParentCategoryId] [int] NOT NULL,
+	[ParentCategoryId] [int] NULL,
  CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

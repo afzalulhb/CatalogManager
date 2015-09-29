@@ -9,9 +9,10 @@ namespace CatalogManager.Infrastructure.UnitOfWork
         private CatalogManagerContext context;
         private IRepository<Category> categoryRepository;
         private IRepository<Product> productRepository;
-        public UnitOfWork()
+
+        public UnitOfWork(CatalogManagerContext context)
         {
-            this.context = new CatalogManagerContext();
+            this.context = context;
         }
 
         public IRepository<Category> Categories

@@ -1,0 +1,212 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CatalogManager.Infrastructure.UnitOfWork;
+using CatalogManager.Infrastructure;
+using CatalogManager.Domain.Entities;
+
+namespace CatalogManager.Test
+{
+    [TestClass]
+    public class RepositoryTest
+    {
+
+        [TestMethod]
+        public void GetCategoryByIdShouldReturnOne()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+            // Act
+            var category = unitOfWork.Categories.GetById(4);
+            
+            // Assert
+            Assert.IsNotNull(category);
+            Assert.IsTrue(category.Id > 0);
+        }
+
+        [TestMethod]
+        public void CreateCategoryShouldCreateOne()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            var category = new Category() { Name = "Test Category", ParentCategory = null, Products = null };
+
+            // Act
+            unitOfWork.Categories.Insert(category);
+            unitOfWork.Save();
+
+            // Assert
+            Assert.IsNotNull(category);
+            Assert.IsTrue(category.Id > 0);
+        }
+
+        [TestMethod]
+        public void CreateChildCategoryShouldCreateOne()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            var parentCategory = unitOfWork.Categories.GetById(4);
+            var category = new Category() { Name = "Test Category", ParentCategory = parentCategory, Products = null };
+
+            // Act
+            unitOfWork.Categories.Insert(category);
+            unitOfWork.Save();
+
+            // Assert
+            Assert.IsNotNull(category);
+            Assert.IsTrue(category.Id > 0);
+            Assert.IsTrue(category.ParentCategory != null);
+        }
+
+        [TestMethod]
+        public void GetAllCategoriesShouldReturnAll()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+            // Act
+            var categories = unitOfWork.Categories.GetAll();
+
+            // Assert
+            Assert.IsNotNull(categories);
+            Assert.IsTrue(categories.Count() > 0);
+        }
+
+        [TestMethod]
+        public void DeleteCategoryShouldSucceed()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            var name = DateTime.Now.ToString();
+            var category = new Category() { Name = name, ParentCategory = null, Products = null };
+            unitOfWork.Categories.Insert(category);
+            unitOfWork.Save();
+            var savedCategory = unitOfWork.Categories.GetAll().FirstOrDefault(x => x.Name == name);
+            Assert.IsNotNull(savedCategory);
+
+            // Act
+            unitOfWork.Categories.Delete(savedCategory);
+            unitOfWork.Save();
+            var deletedCategory = unitOfWork.Categories.GetAll().FirstOrDefault(x => x.Name == name);
+
+            // Assert
+            Assert.IsNull(deletedCategory);
+        }
+
+        [TestMethod]
+        public void EditCategoryShouldSucceed()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            var category = unitOfWork.Categories.GetById(5);
+            var name = category.Name;
+
+            // Act
+            category.Name = string.Format("Changed name at {0}", DateTime.Now);
+            unitOfWork.Categories.Update(category);
+            unitOfWork.Save();
+
+            // Assert
+            Assert.AreNotEqual(name, category.Name);
+        }
+
+
+
+        [TestMethod]
+        public void GetProductByIdShouldReturnOne()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+            // Act
+            var product = unitOfWork.Products.GetById(4);
+
+            // Assert
+            Assert.IsNotNull(product);
+            Assert.IsTrue(product.Id > 0);
+        }
+
+        [TestMethod]
+        public void CreateProductShouldCreateOne()
+        {
+            // Arrange
+            // TO DO: Make sure Category with id = 4 exists in the db
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            var product = new Product() { Name = "Test Product",Description="This is a test product", CategoryId=4, Price=10.00M };
+
+            // Act
+            unitOfWork.Products.Insert(product);
+            unitOfWork.Save();
+
+            // Assert
+            Assert.IsNotNull(product);
+            Assert.IsTrue(product.Id > 0);
+        }
+        
+        [TestMethod]
+        public void GetAllProductssShouldReturnAll()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+
+            // Act
+            var products = unitOfWork.Products.GetAll();
+
+            // Assert
+            Assert.IsNotNull(products);
+            Assert.IsTrue(products.Count() > 0);
+        }
+
+        [TestMethod]
+        public void EditProductShouldSucceed()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            var product = unitOfWork.Products.GetById(5);
+            var name = product.Name;
+
+            // Act
+            product.Name = string.Format("Changed name at {0}", DateTime.Now);
+            unitOfWork.Products.Update(product);
+            unitOfWork.Save();
+
+            // Assert
+            Assert.AreNotEqual(name, product.Name);
+        }
+
+        [TestMethod]
+        public void DeleteProductShouldSucceed()
+        {
+            // Arrange
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            var name = DateTime.Now.ToString();
+            var product = new Product() { Name = name, Description = "This is a test product", CategoryId = 4, Price = 10.00M };
+            unitOfWork.Products.Insert(product);
+            unitOfWork.Save();
+            var savedProduct = unitOfWork.Products.GetAll().FirstOrDefault(x => x.Name == name);
+            Assert.IsNotNull(savedProduct);
+
+            // Act
+            unitOfWork.Products.Delete(savedProduct);
+            unitOfWork.Save();
+            var deletedProduct = unitOfWork.Products.GetAll().FirstOrDefault(x => x.Name == name);
+
+            // Assert
+            Assert.IsNull(deletedProduct);
+        }
+       
+    }
+}

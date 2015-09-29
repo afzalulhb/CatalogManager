@@ -12,7 +12,11 @@ namespace CatalogManager.AppService.Services
     {
         IUnitOfWork unitOfWork;
 
-       // public CategoryProductAppService(I)
+        public CategoryProductAppService(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
+
 
         /// <summary>
         /// TO DO

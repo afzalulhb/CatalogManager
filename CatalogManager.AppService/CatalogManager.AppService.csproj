@@ -41,6 +41,9 @@
   <ItemGroup>
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\CategoryDto.cs" />
+    <Compile Include="Helpers\CategoryProductAdapter.cs" />
+    <Compile Include="Helpers\ITypeAdapter.cs" />
+    <Compile Include="Helpers\ProjectionExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CategoryProductAppService.cs" />
     <Compile Include="Services\ICategoryProductAppService.cs" />
