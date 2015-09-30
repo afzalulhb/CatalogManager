@@ -17,7 +17,7 @@ namespace CatalogManager.AppService.Helpers
         /// <summary>
         /// projected a enumerable collection of items
         /// </summary>
-        /// <typeparam name="TProjection">The dtop projection type</typeparam>
+        /// <typeparam name="TProjection">The dto projection type</typeparam>
         /// <param name="items">the collection of entity items</param>
         /// <returns>Projected collection</returns>
         public static List<TProjection> ProjectedAsCollection<TProjection>(this IEnumerable<object> items)

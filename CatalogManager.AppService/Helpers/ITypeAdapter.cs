@@ -8,8 +8,6 @@ namespace CatalogManager.AppService.Helpers
 {
     public interface ITypeAdapter
     {
-
-
         TTarget Adapt<TSource, TTarget>(TSource source, TTarget target)
             where TTarget : class,new()
             where TSource : class;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CatalogManager.AppService.Helpers;
 
 namespace CatalogManager.AppService.Services
 {
@@ -19,77 +20,69 @@ namespace CatalogManager.AppService.Services
 
 
         /// <summary>
-        /// TO DO
+        /// Returns top level Categories
         /// </summary>
-        /// <param name="category"></param>
+        /// <returns></returns>
+        public IEnumerable<CategoryDto> GetTopLevelCategories()
+        {
+            var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategory == null).ToList();
+            return categories.ProjectedAsCollection<CategoryDto>();
+        }
+
+        public IEnumerable<CategoryDto> GetCategoriesByParent(int parentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<CategoryDto> GetCategories()
+        {
+            throw new NotImplementedException();
+        }
+        
         public void CreateCategory(CategoryDto category)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// TO DO
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public CategoryDto GetCategoryById(int id)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="category"></param>
         public void UpdateCategory(CategoryDto category)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="category"></param>
         public void DeleteCategory(CategoryDto category)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="product"></param>
         public void CreateProduct(ProductDto product)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public ProductDto GetProductById(int id)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="product"></param>
         public void UpdateProduct(ProductDto product)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="product"></param>
         public void DeleteProduct(ProductDto product)
         {
             throw new NotImplementedException();
         }
+        
+        public IEnumerable<ProductDto> GetProductsByCategory(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
