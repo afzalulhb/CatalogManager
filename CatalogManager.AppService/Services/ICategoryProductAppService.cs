@@ -13,16 +13,16 @@ namespace CatalogManager.AppService.Services
         IEnumerable<CategoryDto> GetCategories();
         IEnumerable<CategoryDto> GetTopLevelCategories();
         IEnumerable<CategoryDto> GetCategoriesByParent(int parentId);
-        void CreateCategory(CategoryDto category);
+        CategoryDto CreateCategory(CategoryDto dto);
         CategoryDto GetCategoryById(int id);
-        void UpdateCategory(CategoryDto category);
-        void DeleteCategory(CategoryDto category);
+        CategoryDto UpdateCategory(CategoryDto dto);
+        void DeleteCategory(int id);
 
         //CRUD Products
         IEnumerable<ProductDto> GetProductsByCategory(int categoryId);
-        void CreateProduct(ProductDto product);
+        ProductDto CreateProduct(ProductDto dto);
         ProductDto GetProductById(int id);
-        void UpdateProduct(ProductDto product);
-        void DeleteProduct(ProductDto product);
+        ProductDto UpdateProduct(ProductDto dto);
+        void DeleteProduct(int id);
     }
 }

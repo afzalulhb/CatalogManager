@@ -8,6 +8,12 @@ namespace CatalogManager.AppService.Helpers
 {
     public static class ProjectionExtensionMethods
     {
+        /// <summary>
+        /// project an item
+        /// </summary>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static TProjection ProjectedAs<TProjection>(this object item) where TProjection : class,new()
         {
             ITypeAdapter adapter = new CategoryProductAdapter();
