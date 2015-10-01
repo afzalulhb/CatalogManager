@@ -75,6 +75,7 @@
     <Compile Include="FactoryTest.cs" />
     <Compile Include="CategoryProductAppServiceTest.cs" />
     <Compile Include="CategoryControllerTest.cs" />
+    <Compile Include="ProductControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CatalogManager.AppService\CatalogManager.AppService.csproj">

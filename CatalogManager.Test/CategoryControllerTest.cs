@@ -17,15 +17,6 @@ namespace CatalogManager.Test
     [TestClass]
     public class CategoryControllerTest
     {
-        //IEnumerable<CategoryDto> GetCategories();
-        //IEnumerable<CategoryDto> GetTopLevelCategories();
-        //IEnumerable<CategoryDto> GetCategoriesByParent(int parentId);
-
-        //CategoryDto CreateCategory(CategoryDto dto);
-        //CategoryDto GetCategoryById(int id);
-        //CategoryDto UpdateCategory(CategoryDto dto);
-        //void DeleteCategory(int id);
-
         [TestMethod]
         public void GetCategoriesTest()
         {
@@ -97,6 +88,7 @@ namespace CatalogManager.Test
             Assert.IsTrue(categories.Count() > 0);
             Assert.IsTrue(categories.ElementAt(0).ParentCategoryId == parentId);
         }
+
         [TestMethod]
         public void CreateCategoryShouldCreateOne()
         {
@@ -126,6 +118,97 @@ namespace CatalogManager.Test
             Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
             Assert.IsTrue(category.Id > 0);
             Assert.IsTrue(category.Name == name);
+        }
+
+        [TestMethod]
+        public void GetCategoryByIdShouldReturnOne()
+        {
+            // Arrange 
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
+            var controller = new CategoryController(appService);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+            int id = 1;
+            //Act
+            var response = controller.GetCategoryById(id);
+
+            //Assert
+            CategoryDto category;
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.TryGetContentValue<CategoryDto>(out category));
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+            Assert.IsTrue(category.Id == id);
+        }
+
+        [TestMethod]
+        public void UpdateCategoryShouldUpdate()
+        {
+            // Arrange 
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
+            var controller = new CategoryController(appService);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+            string changedName = string.Format("Name changed at {0}", DateTime.Now);
+            int id = 1;
+            CategoryDto categoryToUpdate;
+            var response = controller.GetCategoryById(id);
+            response.TryGetContentValue<CategoryDto>(out categoryToUpdate);
+            Assert.IsNotNull(categoryToUpdate);
+            categoryToUpdate.Name = changedName;
+
+            //Act
+            response = controller.UpdateCategory(categoryToUpdate);
+
+            //Assert
+            CategoryDto category;
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.TryGetContentValue<CategoryDto>(out category));
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+            Assert.IsTrue(category.Id == id);
+            Assert.IsTrue(category.Name == changedName);
+        }
+
+        [TestMethod]
+        public void DeleteCategoryShouldDelete()
+        {
+            // Arrange 
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
+            var controller = new CategoryController(appService);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+            string name = string.Format("Test Category to delete created at {0}", DateTime.Now);
+            int categoryId = 0;
+
+            var categoryDto = new CategoryDto()
+            {
+                Name = name,
+                ParentCategoryId = 1,
+                Products = new List<ProductDto>()
+            };
+
+            var response = controller.CreateCategory(categoryDto);
+            CategoryDto categoryToDelete;
+            response.TryGetContentValue<CategoryDto>(out categoryToDelete);
+            categoryId = categoryToDelete.Id;
+            Assert.IsNotNull(categoryToDelete);
+            Assert.IsTrue(categoryToDelete.Id > 0);
+
+            //Act
+            response = controller.DeleteCategory(categoryId);
+            var getResponse = controller.GetCategoryById(categoryId);
+
+            //Assert
+            CategoryDto category;
+            Assert.IsNotNull(getResponse);
+            Assert.IsTrue(!getResponse.TryGetContentValue<CategoryDto>(out category));
+            Assert.IsTrue(getResponse.StatusCode == HttpStatusCode.OK);
+            Assert.IsTrue(category==null);
         }
     }
 }

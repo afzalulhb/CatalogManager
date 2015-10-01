@@ -114,7 +114,8 @@ namespace CatalogManager.Test
             IUnitOfWork unitOfWork = new UnitOfWork(context);
             ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
             string changedName = string.Format("Name changed at {0}", DateTime.Now);
-            var category = appService.GetCategoryById(1);
+            int id = 1;
+            var category = appService.GetCategoryById(id);
 
             // Act
             Assert.IsTrue(category.Name != changedName);

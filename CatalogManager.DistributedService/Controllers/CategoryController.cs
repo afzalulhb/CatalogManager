@@ -8,13 +8,21 @@ using CatalogManager.AppService.Services;
 using System.Net.Http;
 using System.Net;
 using CatalogManager.AppService.Dtos;
+using System.Web.Http.Cors;
 
 namespace CatalogManager.DistributedService.Controllers
 {
     [RoutePrefix("category")]
+    [EnableCors(origins: "http://localhost:58082", headers: "*", methods: "*")]
     public class CategoryController : ApiController
     {
         private readonly ICategoryProductAppService categoryProductAppService;
+
+        public CategoryController()
+            : base()
+        {
+        }
+
 
         public CategoryController(ICategoryProductAppService service)
         {
@@ -52,13 +60,30 @@ namespace CatalogManager.DistributedService.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
-        //IEnumerable<CategoryDto> GetCategories();
-        //IEnumerable<CategoryDto> GetTopLevelCategories();
-        //IEnumerable<CategoryDto> GetCategoriesByParent(int parentId);
-        //CategoryDto CreateCategory(CategoryDto dto);
-        //CategoryDto GetCategoryById(int id);
-        //CategoryDto UpdateCategory(CategoryDto dto);
-        //void DeleteCategory(int id);
+
+        [HttpGet]
+        [Route("byid")]
+        public HttpResponseMessage GetCategoryById(int id)
+        {
+            var result = categoryProductAppService.GetCategoryById(id);
+            return Request.CreateResponse(HttpStatusCode.OK, result);
+        }
+
+        [HttpPut]
+        [Route("")]
+        public HttpResponseMessage UpdateCategory([FromBody] CategoryDto dto)
+        {
+            var result = categoryProductAppService.UpdateCategory(dto);
+            return Request.CreateResponse(HttpStatusCode.OK, result);
+        }
+
+        [HttpDelete]
+        [Route("")]
+        public HttpResponseMessage DeleteCategory(int id)
+        {
+            categoryProductAppService.DeleteCategory(id);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
 
     }
 }

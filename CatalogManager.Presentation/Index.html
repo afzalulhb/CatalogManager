@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-resource.js"></script>
+    <script src="Scripts/Controllers/catalogManagerController.js"></script>
+    <script src="Scripts/Services/catalogManagerService.js"></script>
+</head>
+<body ng-app="catalogManager" ng-controller="CatalogManagerController">
+    <div ng-repeat="item in cm.categories">
+        <span>{{item.Name}}</span>
+    </div>
+</body>
+</html>
