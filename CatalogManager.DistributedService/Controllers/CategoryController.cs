@@ -35,6 +35,14 @@ namespace CatalogManager.DistributedService.Controllers
             var result = categoryProductAppService.GetCategories();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
+        
+        [HttpGet]
+        [Route("hierarchy")]
+        public HttpResponseMessage GetCategoryHierarchy()
+        {
+            var result = categoryProductAppService.GetCategoryHierarchy();
+            return Request.CreateResponse(HttpStatusCode.OK, result);
+        }
 
         [HttpGet]
         [Route("top")]

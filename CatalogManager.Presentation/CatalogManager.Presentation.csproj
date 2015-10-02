@@ -57,7 +57,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="home.html" />
     <Content Include="packages.config" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\Controllers\categoryController.js" />
+    <Content Include="Scripts\Directives\catalogManagerDirectives.js" />
+    <Content Include="Scripts\Directives\uiDirectives.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -68,7 +76,9 @@
   <ItemGroup>
     <Content Include="Index.html" />
     <Content Include="Scripts\Controllers\catalogManagerController.js" />
+    <Content Include="Scripts\Routes\catalogManagerRoute.js" />
     <Content Include="Scripts\Services\catalogManagerService.js" />
+    <Content Include="Scripts\Templates\category.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,23 @@ namespace CatalogManager.AppService.Services
             var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategory == null);
             return categories.ProjectedAsCollection<CategoryDto>();
         }
+        public IEnumerable<CategoryDto> GetCategoryHierarchy()
+        {
+            var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategory == null);
+            var categoryDtos = categories.ProjectedAsCollection<CategoryDto>();
+            BuildCategoryHierarchy(categoryDtos);
+            return categoryDtos;
+        }
+
+        private void BuildCategoryHierarchy(IEnumerable<CategoryDto> categories)
+        {
+            foreach (var cat in categories)
+            {
+                var childCategories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == cat.Id);
+                var dtos = childCategories.ProjectedAsCollection<CategoryDto>();
+                cat.ChildCategories = dtos;
+            }
+        }
 
         public IEnumerable<CategoryDto> GetCategoriesByParent(int parentId)
         {

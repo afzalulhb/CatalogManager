@@ -10,7 +10,8 @@ namespace CatalogManager.AppService.Dtos
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int?  ParentCategoryId { get; set; }
-        public List<ProductDto> Products{ get; set; }
+        public int? ParentCategoryId { get; set; }
+        public List<ProductDto> Products { get; set; }
+        public List<CategoryDto> ChildCategories { get; set; }
     }
 }

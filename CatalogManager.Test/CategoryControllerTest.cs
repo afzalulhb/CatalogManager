@@ -42,6 +42,32 @@ namespace CatalogManager.Test
         }
 
         [TestMethod]
+        public void GetCategoryHierarchyTest()
+        {
+            // Arrange 
+            var context = new CatalogManagerContext();
+            IUnitOfWork unitOfWork = new UnitOfWork(context);
+            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
+            var controller = new CategoryController(appService);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+
+            //Act
+            var response = controller.GetCategoryHierarchy();
+
+            //Assert
+            IEnumerable<CategoryDto> categories;
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.TryGetContentValue<IEnumerable<CategoryDto>>(out categories));
+            var parentWithChild = categories.Where(x => x.ChildCategories.Count > 0);
+            Assert.IsNotNull(parentWithChild);
+            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
+            Assert.IsTrue(categories.Count() > 0);
+            Assert.IsTrue(categories.ElementAt(0).ParentCategoryId.HasValue == false);
+
+        }
+
+        [TestMethod]
         public void GetTopLevelCategoriesTest()
         {
             // Arrange 

@@ -12,6 +12,7 @@ namespace CatalogManager.AppService.Services
         //CRUD Categories
         IEnumerable<CategoryDto> GetCategories();
         IEnumerable<CategoryDto> GetTopLevelCategories();
+        IEnumerable<CategoryDto> GetCategoryHierarchy();
         IEnumerable<CategoryDto> GetCategoriesByParent(int parentId);
         CategoryDto CreateCategory(CategoryDto dto);
         CategoryDto GetCategoryById(int id);
