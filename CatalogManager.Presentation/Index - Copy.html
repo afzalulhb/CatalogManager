@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="Scripts/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-resource.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+    <script src="Scripts/Controllers/catalogManagerController.js"></script>
+    <script src="Scripts/Controllers/categoryController.js"></script>
+    <script src="Scripts/Controllers/productController.js"></script>
+    <script src="Scripts/Services/catalogManagerService.js"></script>
+    <script src="Scripts/Routes/catalogManagerRoute.js"></script>
+    <script src="Scripts/Directives/uiDirectives.js"></script>
+    <script src="Scripts/Directives/catalogManagerDirectives.js"></script>
+</head>
+<body ng-app="catalogManager">
+    <!--<div ng-repeat="item in cm.categories">
+        <span>{{item.Name}}</span>
+    </div>-->
+    <div class="row">
+        <!-- Menu starts here -->
+        <div class="col-md-4">
+            <div class="body-container menu-collapsed">
+                <div>
+                    <div class="body-menu-container" ng-controller="CatalogManagerController">
+                        <div class="menu-title" hub-menu-toggle>
+                            <span class="fa fa-caret-right"></span>
+                            <div class="menu-label">
+                                <span><res>Menu</res></span>
+                            </div>
+                        </div>
+                        <ul id="menuMain" class="nav">
+                            <li ng-repeat="item in menuitems" ng-include="'subMenuItem.tmpl'"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="body-content">
+                    <div class="branding">
+                        <img class="branding-logo" ng-src="{{ brandingLogoUrl }}" ng-show="brandingLogoUrl" />
+                    </div>
+
+                    <div class="pnl-page">
+                        <div ui-view ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" class="branding-border-color"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div ng-view></div>
+        </div>
+    </div>
+    <script type="text/ng-template" id="subMenuItem.tmpl">
+        <i class="fa fa-caret-right" hub-submenu-toggle ng-if="item.ChildCategories"></i>
+        <a ng-href="{{LinkFor(item)}}" ng-class="{ 'high': item.active, 'no-submenu': !item.ChildCategories }" hub-submenu-toggle ng-click="item.click($event)">
+            <span class="nav-label">{{ item.Name }}</span>
+        </a>
+        <ul class="nav nav-second-level" ng-if="item.ChildCategories">
+            <li ng-repeat="item in item.ChildCategories" ng-include="'subMenuItem.tmpl'"></li>
+        </ul>
+    </script>
+</body>
+</html>

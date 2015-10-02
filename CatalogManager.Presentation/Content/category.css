@@ -1,0 +1,12 @@
+﻿
+.table {border-collapse: collapse;}
+.table .redheader {background-color:#C20009;font-size:12px;font-weight:bold;}
+.table .headertext {color:White;background-color:#C20009;font-size:12px;font-weight:bold;}
+.table .evendata {color:#284775;background-color:White;}
+.table .odddata {color:#333333;background-color:#F7F6F3;}
+.pagerspace {padding-right:15px;}
+
+
+.table { border: 1px solid #4C4D4D; }
+.table thead > tr > th { border-bottom: none; }
+.table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td { border: 1px solid #4C4D4D; }

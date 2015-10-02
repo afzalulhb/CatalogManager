@@ -13,7 +13,7 @@ using System.Web.Http.Cors;
 namespace CatalogManager.DistributedService.Controllers
 {
     [RoutePrefix("product")]
-    [EnableCors(origins: "http://localhost:58082", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProductController : ApiController
     {
         private readonly ICategoryProductAppService categoryProductAppService;
@@ -28,7 +28,7 @@ namespace CatalogManager.DistributedService.Controllers
         }
 
         [HttpGet]
-        [Route("bycategory")]
+        [Route("bycategory/{categoryId}")]
         public HttpResponseMessage GetProductsByCategory(int categoryId)
         {
             var result = categoryProductAppService.GetProductsByCategory(categoryId);
@@ -36,7 +36,7 @@ namespace CatalogManager.DistributedService.Controllers
         }
 
         [HttpGet]
-        [Route("byid")]
+        [Route("byid/{id}")]
         public HttpResponseMessage GetProductById(int id)
         {
             var result = categoryProductAppService.GetProductById(id);

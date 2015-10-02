@@ -14,14 +14,21 @@ catalogManager.config(function ($routeProvider) {
             controller: 'CategoryController'
         })
 
+        .when('/cat/:id?', {
+            templateUrl: 'scripts/templates/category.html',
+            controller: 'CategoryController'
+        })
 
-        .when('/cat/subcat', {
+
+        .when('/cat/subcat/:parentid?/:id?', {
             templateUrl: 'scripts/templates/subcategory.html',
-            controller: 'mainController'
-        });
-});
+            controller: 'SubCategoryController'
+        })
 
-catalogManager.controller('mainController', function ($scope) {
-    // create a message to display in our view
-    $scope.message = 'Everyone come and see how good I look!';
+
+        .when('/product/:catid?/:id?', {
+            templateUrl: 'scripts/templates/product.html',
+            controller: 'ProductController'
+        })
+;
 });

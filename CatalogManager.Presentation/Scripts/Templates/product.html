@@ -1,0 +1,30 @@
+﻿<div class="page-container" ng-cloak>
+    <form name="productForm" ng-submit="submitForm()">
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">Name</label>
+                <input type="text" name="name" ng-model="cm.Product.Name" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">Description</label>
+                <textarea name="description" ng-model="cm.Product.Description" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">Price</label>
+                <input type="text" name="price" ng-model="cm.Product.Price" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button type="submit" class="btn-save primaryBtn">SAVE</button>
+                <button type="button" class="btn-cancel secondaryBtn">CANCEL</button>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </form>
+</div>
