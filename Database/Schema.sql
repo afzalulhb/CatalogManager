@@ -20,7 +20,7 @@ SET ANSI_PADDING ON
 GO
 CREATE TABLE [dbo].[Category](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar](200) NULL,
+	[Name] [varchar](200) NOT NULL,
 	[ParentCategoryId] [int] NULL,
  CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
 (
@@ -60,6 +60,8 @@ ALTER TABLE [dbo].[Category] CHECK CONSTRAINT [FK_Category_Category]
 GO
 ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK_Product_Category] FOREIGN KEY([CategoryId])
 REFERENCES [dbo].[Category] ([Id])
+ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FK_Product_Category]
 GO
+

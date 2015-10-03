@@ -60,7 +60,7 @@ namespace CatalogManager.DistributedService.Controllers
         }
 
         [HttpDelete]
-        [Route("")]
+        [Route("{id}")]
         public HttpResponseMessage DeleteProduct(int id)
         {
             categoryProductAppService.DeleteProduct(id);

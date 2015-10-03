@@ -10,3 +10,4 @@
 .table { border: 1px solid #4C4D4D; }
 .table thead > tr > th { border-bottom: none; }
 .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td { border: 1px solid #4C4D4D; }
+.nameText{width:500px;}

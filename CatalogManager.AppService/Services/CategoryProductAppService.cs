@@ -66,10 +66,8 @@ namespace CatalogManager.AppService.Services
             ICategoryFactory factory = new CategoryFactory();
             var parentCategory = new Category();
             var productList = new List<Product>();
-            if(dto.ParentCategoryId.HasValue)
-            {
-                parentCategory = unitOfWork.Categories.GetById((int)dto.ParentCategoryId);
-            }
+
+            parentCategory = dto.ParentCategoryId.HasValue ? unitOfWork.Categories.GetById((int)dto.ParentCategoryId) : null;
 
             var category = factory.CreateCategory(dto.Name, parentCategory, productList);
 
@@ -98,6 +96,14 @@ namespace CatalogManager.AppService.Services
         public void DeleteCategory(int id)
         {
             var category = unitOfWork.Categories.GetById(id);
+
+            // Delete children first
+            var children = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == id);
+            foreach (var cat in children)
+            {
+                unitOfWork.Categories.Delete(cat);
+            }
+
             unitOfWork.Categories.Delete(category);
             unitOfWork.Save();
         }

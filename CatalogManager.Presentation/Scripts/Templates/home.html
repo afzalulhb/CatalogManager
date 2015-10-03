@@ -3,12 +3,13 @@
     <div class="row">
         <br />
         <div>
-            <span><a href="#/cat/subcat/{{cm.id}}">+ Add a Category</a></span>
+            <span><a href="#/cat/new">+ Add a Category</a></span>
         </div>
         <br />
         <span style="font-size: small; font-weight: bold; color: #C20009;">
             Categories
         </span>
+        <br />
         <br />
         <table class="table" id="tableCategory">
             <thead>
@@ -26,18 +27,14 @@
                         <span ng-switch-when="text">{{item[column.name]}}</span>
                         <span ng-switch-when="nav">
                             <div class="btn-group">
-                                <span><a href="#/cat/subcat/{{item.ParentCategoryId}}/{{item.Id}}">Edit</a></span>
-                                <span><a href="#/cat/subcat/{{item.ParentCategoryId}}/{{item.Id}}">Delete</a></span>
+                                <span><a href="#/cat/edit/{{item.ParentCategoryId}}/{{item.Id}}">Edit</a></span>
+                                <span><a href="#/cat/edit/{{item.ParentCategoryId}}/{{item.Id}}">Delete</a></span>
                             </div>
                         </span>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </div>
-    <br />
-    <div class="hub-listview-create">
-        <a class="branding-hover-color cursorPointer" hub-table-row-edit edit-table="hub-listview-address-table" edit-form="hubAddressEditForm">+ Add New Address</a>
     </div>
     <br />  
 </div>

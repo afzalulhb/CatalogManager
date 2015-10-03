@@ -1,5 +1,41 @@
 ﻿<div class="page-container" ng-cloak>
 
-    <div>subcategory</div>
-
+    <div class="row">
+    <br /> 
+    <br />
+    <div>
+        <span><a href="#/product/{{cm.id}}">+ Add New Product</a></span>
+    </div>
+    <br />
+    <span style="font-size: small; font-weight: bold; color: #C20009;">
+        Products
+    </span>
+    <br />
+    <div class="row">
+        <table class="table" id="tableProduct">
+            <thead>
+                <tr class="redheader">
+                    <th class="text-left {{column.style}}" ng-repeat="column in tableProductColumns" ng-class="{'cursorPointer': column.text.length>0}">
+                        <span ng-class="{'mgr-col-min': column.type=='icon'||column.type=='image' }" class="headertext">
+                            {{(column.text)}}
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(i, item) in cvProductData.items" ng-class-odd="'odddata'" ng-class-even="'evendata'">
+                    <td class="text-left {{column.style}} " ng-switch="column.type" ng-repeat="column in tableProductColumns" align="center">
+                        <span ng-switch-when="text">{{item[column.name]}}</span>
+                        <span ng-switch-when="currency">{{item[column.name]|currency}}</span>
+                        <span ng-switch-when="nav">
+                            <div class="btn-group">
+                                <span><a href="#/product/{{item.CategoryId}}/{{item.Id}}">Edit</a></span>
+                                <span><a href="#/product/{{item.CategoryId}}/{{item.Id}}">Delete</a></span>
+                            </div>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
