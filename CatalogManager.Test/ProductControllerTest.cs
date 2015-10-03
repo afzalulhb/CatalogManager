@@ -14,10 +14,16 @@ using System.Net;
 
 namespace CatalogManager.Test
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [TestClass]
     public class ProductControllerTest
     {
 
+        /// <summary>
+        /// Gets the products by category should retrun one or more.
+        /// </summary>
         [TestMethod]
         public void GetProductsByCategoryShouldRetrunOneOrMore()
         {
@@ -42,6 +48,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(products.ElementAt(0).CategoryId == categoryId);
         }
 
+        /// <summary>
+        /// Gets the product by identifier should return one.
+        /// </summary>
         [TestMethod]
         public void GetProductByIdShouldReturnOne()
         {
@@ -63,7 +72,10 @@ namespace CatalogManager.Test
             Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
             Assert.IsTrue(product.Id == id);
         }
-        
+
+        /// <summary>
+        /// Creates the product should create one.
+        /// </summary>
         [TestMethod]
         public void CreateProductShouldCreateOne()
         {
@@ -98,6 +110,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(product.Price  == price);
         }
 
+        /// <summary>
+        /// Updates the product should update.
+        /// </summary>
         [TestMethod]
         public void UpdateProductShouldUpdate()
         {
@@ -128,6 +143,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(product.Name == changedName);
         }
 
+        /// <summary>
+        /// Deletes the product should delete.
+        /// </summary>
         [TestMethod]
         public void DeleteProductShouldDelete()
         {

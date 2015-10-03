@@ -6,9 +6,15 @@ using System.Collections.Generic;
 
 namespace CatalogManager.Test
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [TestClass]
     public class FactoryTest
     {
+        /// <summary>
+        /// Creates the category should return one.
+        /// </summary>
         [TestMethod]
         public void CreateCategoryShouldReturnOne()
         {
@@ -26,6 +32,9 @@ namespace CatalogManager.Test
             Assert.AreEqual(name, category.Name);
         }
 
+        /// <summary>
+        /// Creates the product should return one.
+        /// </summary>
         [TestMethod]
         public void CreateProductShouldReturnOne()
         {

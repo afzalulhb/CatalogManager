@@ -12,8 +12,15 @@ namespace CatalogManager.AppService.Helpers
     /// One-way mapper, from entity to dto
     /// </summary>
     public class CategoryProductAdapter : ITypeAdapter
-    {     
-               
+    {
+
+        /// <summary>
+        /// Adapts the specified source.
+        /// </summary>
+        /// <typeparam name="TTarget">The type of the target.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception">This type of conversion is not allowed</exception>
         public TTarget Adapt<TTarget>(object source) where TTarget : class,new()
         {
             if (typeof(TTarget) == typeof(CategoryDto))
@@ -45,6 +52,11 @@ namespace CatalogManager.AppService.Helpers
         }
 
 
+        /// <summary>
+        /// Converts the category to category dto.
+        /// </summary>
+        /// <param name="category">The category.</param>
+        /// <returns></returns>
         private CategoryDto ConvertCategoryToCategoryDto(Category category)
         {
             if (category == null)
@@ -63,6 +75,11 @@ namespace CatalogManager.AppService.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Converts the category list to category dto list.
+        /// </summary>
+        /// <param name="categories">The categories.</param>
+        /// <returns></returns>
         private IEnumerable<CategoryDto> ConvertCategoryListToCategoryDtoList(IEnumerable<Category> categories)
         {
             var lst = new List<CategoryDto>();
@@ -77,6 +94,11 @@ namespace CatalogManager.AppService.Helpers
             return lst;            
         }
 
+        /// <summary>
+        /// Converts the product to product dto.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <returns></returns>
         private ProductDto ConvertProductToProductDto(Product product)
         {
             if (product == null)
@@ -94,6 +116,11 @@ namespace CatalogManager.AppService.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Converts the product list to product dto list.
+        /// </summary>
+        /// <param name="products">The products.</param>
+        /// <returns></returns>
         private IEnumerable<ProductDto> ConvertProductListToProductDtoList(IEnumerable<Product> products)
         {
             var lst = new List<ProductDto>();

@@ -12,21 +12,39 @@ using System.Web.Http.Cors;
 
 namespace CatalogManager.DistributedService.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [RoutePrefix("product")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProductController : ApiController
     {
+        /// <summary>
+        /// The category product application service
+        /// </summary>
         private readonly ICategoryProductAppService categoryProductAppService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductController"/> class.
+        /// </summary>
         public ProductController()
             : base()
         {
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductController"/> class.
+        /// </summary>
+        /// <param name="service">The service.</param>
         public ProductController(ICategoryProductAppService service)
         {
             categoryProductAppService = service;
         }
 
+        /// <summary>
+        /// Gets the products by category.
+        /// </summary>
+        /// <param name="categoryId">The category identifier.</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("bycategory/{categoryId}")]
         public HttpResponseMessage GetProductsByCategory(int categoryId)
@@ -35,6 +53,11 @@ namespace CatalogManager.DistributedService.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
+        /// <summary>
+        /// Gets the product by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("byid/{id}")]
         public HttpResponseMessage GetProductById(int id)
@@ -43,6 +66,11 @@ namespace CatalogManager.DistributedService.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
+        /// <summary>
+        /// Creates the product.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("")]
         public HttpResponseMessage CreateProduct([FromBody] ProductDto dto)
@@ -51,6 +79,11 @@ namespace CatalogManager.DistributedService.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
+        /// <summary>
+        /// Updates the product.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("")]
         public HttpResponseMessage UpdateProduct([FromBody] ProductDto dto)
@@ -59,6 +92,11 @@ namespace CatalogManager.DistributedService.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
+        /// <summary>
+        /// Deletes the product.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
         public HttpResponseMessage DeleteProduct(int id)

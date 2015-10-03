@@ -1,6 +1,4 @@
-﻿//var catalogManager = angular.module('catalogManager', ['ngRoute']);
-
- //configure our routes
+﻿ //configure our routes
 catalogManager.config(function ($routeProvider) {
     $routeProvider
 

@@ -14,9 +14,15 @@ using System.Web.Http;
 
 namespace CatalogManager.Test
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [TestClass]
     public class CategoryControllerTest
     {
+        /// <summary>
+        /// Gets the categories test.
+        /// </summary>
         [TestMethod]
         public void GetCategoriesTest()
         {
@@ -41,6 +47,9 @@ namespace CatalogManager.Test
 
         }
 
+        /// <summary>
+        /// Gets the category hierarchy test.
+        /// </summary>
         [TestMethod]
         public void GetCategoryHierarchyTest()
         {
@@ -67,6 +76,9 @@ namespace CatalogManager.Test
 
         }
 
+        /// <summary>
+        /// Gets the top level categories test.
+        /// </summary>
         [TestMethod]
         public void GetTopLevelCategoriesTest()
         {
@@ -91,6 +103,9 @@ namespace CatalogManager.Test
 
         }
 
+        /// <summary>
+        /// Gets the categories by parent should retrun one or more.
+        /// </summary>
         [TestMethod]
         public void GetCategoriesByParentShouldRetrunOneOrMore()
         {
@@ -115,6 +130,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(categories.ElementAt(0).ParentCategoryId == parentId);
         }
 
+        /// <summary>
+        /// Creates the category should create one.
+        /// </summary>
         [TestMethod]
         public void CreateCategoryShouldCreateOne()
         {
@@ -146,6 +164,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(category.Name == name);
         }
 
+        /// <summary>
+        /// Gets the category by identifier should return one.
+        /// </summary>
         [TestMethod]
         public void GetCategoryByIdShouldReturnOne()
         {
@@ -168,6 +189,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(category.Id == id);
         }
 
+        /// <summary>
+        /// Updates the category should update.
+        /// </summary>
         [TestMethod]
         public void UpdateCategoryShouldUpdate()
         {
@@ -198,6 +222,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(category.Name == changedName);
         }
 
+        /// <summary>
+        /// Deletes the category should delete.
+        /// </summary>
         [TestMethod]
         public void DeleteCategoryShouldDelete()
         {

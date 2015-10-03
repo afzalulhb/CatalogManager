@@ -11,10 +11,20 @@ using CatalogManager.Domain.Entities;
 
 namespace CatalogManager.AppService.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CategoryProductAppService : ICategoryProductAppService
     {
+        /// <summary>
+        /// The unit of work
+        /// </summary>
         IUnitOfWork unitOfWork;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryProductAppService"/> class.
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work.</param>
         public CategoryProductAppService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
@@ -30,6 +40,10 @@ namespace CatalogManager.AppService.Services
             var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategory == null);
             return categories.ProjectedAsCollection<CategoryDto>();
         }
+        /// <summary>
+        /// Gets the category hierarchy.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<CategoryDto> GetCategoryHierarchy()
         {
             var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategory == null);
@@ -38,6 +52,10 @@ namespace CatalogManager.AppService.Services
             return categoryDtos;
         }
 
+        /// <summary>
+        /// Builds the category hierarchy.
+        /// </summary>
+        /// <param name="categories">The categories.</param>
         private void BuildCategoryHierarchy(IEnumerable<CategoryDto> categories)
         {
             foreach (var cat in categories)
@@ -48,12 +66,21 @@ namespace CatalogManager.AppService.Services
             }
         }
 
+        /// <summary>
+        /// Gets the categories by parent.
+        /// </summary>
+        /// <param name="parentId">The parent identifier.</param>
+        /// <returns></returns>
         public IEnumerable<CategoryDto> GetCategoriesByParent(int parentId)
         {
             var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == parentId);
             return categories.ProjectedAsCollection<CategoryDto>();
         }
 
+        /// <summary>
+        /// Gets the categories.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<CategoryDto> GetCategories()
         {
 
@@ -61,6 +88,11 @@ namespace CatalogManager.AppService.Services
             return categories.ProjectedAsCollection<CategoryDto>();
         }
 
+        /// <summary>
+        /// Creates the category.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public CategoryDto CreateCategory(CategoryDto dto)
         {
             ICategoryFactory factory = new CategoryFactory();
@@ -77,12 +109,22 @@ namespace CatalogManager.AppService.Services
             return category.ProjectedAs<CategoryDto>();
         }
 
+        /// <summary>
+        /// Gets the category by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public CategoryDto GetCategoryById(int id)
         {
             var category = unitOfWork.Categories.GetById(id);
             return category.ProjectedAs<CategoryDto>();
         }
 
+        /// <summary>
+        /// Updates the category.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public CategoryDto UpdateCategory(CategoryDto dto)
         {
             var category = unitOfWork.Categories.GetById(dto.Id);
@@ -92,7 +134,11 @@ namespace CatalogManager.AppService.Services
             return category.ProjectedAs<CategoryDto>();
 
         }
-        
+
+        /// <summary>
+        /// Deletes the category.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
         public void DeleteCategory(int id)
         {
             var category = unitOfWork.Categories.GetById(id);
@@ -108,6 +154,11 @@ namespace CatalogManager.AppService.Services
             unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Creates the product.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public ProductDto CreateProduct(ProductDto dto)
         {
             IProductFactory factory = new ProductFactory();
@@ -121,12 +172,22 @@ namespace CatalogManager.AppService.Services
             return product.ProjectedAs<ProductDto>();
         }
 
+        /// <summary>
+        /// Gets the product by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public ProductDto GetProductById(int id)
         {
             var product = unitOfWork.Products.GetById(id);
             return product.ProjectedAs<ProductDto>();
         }
 
+        /// <summary>
+        /// Updates the product.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <returns></returns>
         public ProductDto UpdateProduct(ProductDto dto)
         {
             var product = unitOfWork.Products.GetById(dto.Id);
@@ -136,13 +197,22 @@ namespace CatalogManager.AppService.Services
             return product.ProjectedAs<ProductDto>();
         }
 
+        /// <summary>
+        /// Deletes the product.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
         public void DeleteProduct(int id)
         {
             var product = unitOfWork.Products.GetById(id);
             unitOfWork.Products.Delete(product);
             unitOfWork.Save();
         }
-        
+
+        /// <summary>
+        /// Gets the products by category.
+        /// </summary>
+        /// <param name="categoryId">The category identifier.</param>
+        /// <returns></returns>
         public IEnumerable<ProductDto> GetProductsByCategory(int categoryId)
         {
             var products = unitOfWork.Products.GetAll().Where(x => x.CategoryId == categoryId).ToList();
@@ -151,6 +221,11 @@ namespace CatalogManager.AppService.Services
 
         #region private methods
 
+        /// <summary>
+        /// Materializes the category.
+        /// </summary>
+        /// <param name="category">The category.</param>
+        /// <param name="dto">The dto.</param>
         private void MaterializeCategory(Category category, CategoryDto dto)
         {
             category.Name = dto.Name;
@@ -161,6 +236,11 @@ namespace CatalogManager.AppService.Services
             }
         }
 
+        /// <summary>
+        /// Materializes the product.
+        /// </summary>
+        /// <param name="product">The product.</param>
+        /// <param name="dto">The dto.</param>
         private void MaterializeProduct(Product product, ProductDto dto)
         {
             product.Name = dto.Name;

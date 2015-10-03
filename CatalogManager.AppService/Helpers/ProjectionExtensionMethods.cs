@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace CatalogManager.AppService.Helpers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ProjectionExtensionMethods
     {
         /// <summary>
         /// project an item
         /// </summary>
-        /// <typeparam name="TProjection"></typeparam>
-        /// <param name="item"></param>
+        /// <typeparam name="TProjection">The type of the projection.</typeparam>
+        /// <param name="item">The item.</param>
         /// <returns></returns>
         public static TProjection ProjectedAs<TProjection>(this object item) where TProjection : class,new()
         {
@@ -25,7 +28,9 @@ namespace CatalogManager.AppService.Helpers
         /// </summary>
         /// <typeparam name="TProjection">The dto projection type</typeparam>
         /// <param name="items">the collection of entity items</param>
-        /// <returns>Projected collection</returns>
+        /// <returns>
+        /// Projected collection
+        /// </returns>
         public static List<TProjection> ProjectedAsCollection<TProjection>(this IEnumerable<object> items)
             where TProjection : class,new()
         {

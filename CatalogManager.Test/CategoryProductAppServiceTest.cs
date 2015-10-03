@@ -9,10 +9,16 @@ using CatalogManager.AppService.Dtos;
 
 namespace CatalogManager.Test
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [TestClass]
     public class CategoryProductAppServiceTest
     {
         #region Category
+        /// <summary>
+        /// Gets the top level categories should return.
+        /// </summary>
         [TestMethod]
         public void GetTopLevelCategoriesShouldReturn()
         {
@@ -34,6 +40,9 @@ namespace CatalogManager.Test
             }
         }
 
+        /// <summary>
+        /// Gets the categories should return all.
+        /// </summary>
         [TestMethod]
         public void GetCategoriesShouldReturnAll()
         {
@@ -50,6 +59,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(categories.Count() > 0);
         }
 
+        /// <summary>
+        /// Gets the categories by parent return one.
+        /// </summary>
         [TestMethod]
         public void GetCategoriesByParentReturnOne()
         {
@@ -67,6 +79,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(categories.Count() > 0);
         }
 
+        /// <summary>
+        /// Creates the category should create.
+        /// </summary>
         [TestMethod]
         public void CreateCategoryShouldCreate()
         {
@@ -89,6 +104,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(categoryDto.Id > 0);
         }
 
+        /// <summary>
+        /// Gets the category by identifier should return one.
+        /// </summary>
         [TestMethod]
         public void GetCategoryByIdShouldReturnOne()
         {
@@ -106,6 +124,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(!string.IsNullOrEmpty(category.Name));
         }
 
+        /// <summary>
+        /// Updates the category should update.
+        /// </summary>
         [TestMethod]
         public void UpdateCategoryShouldUpdate()
         {
@@ -128,6 +149,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(category.Name == changedName);
         }
 
+        /// <summary>
+        /// Deletes the category should delete.
+        /// </summary>
         [TestMethod]
         public void DeleteCategoryShouldDelete()
         {
@@ -157,6 +181,9 @@ namespace CatalogManager.Test
 
         #region Product
 
+        /// <summary>
+        /// Creates the product should create.
+        /// </summary>
         [TestMethod]
         public void CreateProductShouldCreate()
         {
@@ -180,6 +207,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(dto.Id > 0);
         }
 
+        /// <summary>
+        /// Gets the products by category should return one or more.
+        /// </summary>
         [TestMethod]
         public void GetProductsByCategoryShouldReturnOneOrMore()
         {
@@ -197,6 +227,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(products.Count() > 0);
         }
 
+        /// <summary>
+        /// Gets the product by identifier should return one.
+        /// </summary>
         [TestMethod]
         public void GetProductByIdShouldReturnOne()
         {
@@ -214,6 +247,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(product.Id  > 0);
         }
 
+        /// <summary>
+        /// Updates the product should update.
+        /// </summary>
         [TestMethod]
         public void UpdateProductShouldUpdate()
         {
@@ -241,6 +277,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(product.Description == changedDescription);
         }
 
+        /// <summary>
+        /// Deletes the product should delete.
+        /// </summary>
         [TestMethod]
         public void DeleteProductShouldDelete()
         {

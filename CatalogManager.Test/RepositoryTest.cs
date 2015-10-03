@@ -8,10 +8,16 @@ using CatalogManager.Domain.Entities;
 
 namespace CatalogManager.Test
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [TestClass]
     public class RepositoryTest
     {
 
+        /// <summary>
+        /// Gets the category by identifier should return one.
+        /// </summary>
         [TestMethod]
         public void GetCategoryByIdShouldReturnOne()
         {
@@ -27,6 +33,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(category.Id > 0);
         }
 
+        /// <summary>
+        /// Creates the category should create one.
+        /// </summary>
         [TestMethod]
         public void CreateCategoryShouldCreateOne()
         {
@@ -44,6 +53,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(category.Id > 0);
         }
 
+        /// <summary>
+        /// Creates the child category should create one.
+        /// </summary>
         [TestMethod]
         public void CreateChildCategoryShouldCreateOne()
         {
@@ -63,6 +75,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(category.ParentCategory != null);
         }
 
+        /// <summary>
+        /// Gets all categories should return all.
+        /// </summary>
         [TestMethod]
         public void GetAllCategoriesShouldReturnAll()
         {
@@ -78,6 +93,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(categories.Count() > 0);
         }
 
+        /// <summary>
+        /// Deletes the category should succeed.
+        /// </summary>
         [TestMethod]
         public void DeleteCategoryShouldSucceed()
         {
@@ -100,6 +118,9 @@ namespace CatalogManager.Test
             Assert.IsNull(deletedCategory);
         }
 
+        /// <summary>
+        /// Edits the category should succeed.
+        /// </summary>
         [TestMethod]
         public void EditCategoryShouldSucceed()
         {
@@ -120,6 +141,9 @@ namespace CatalogManager.Test
 
 
 
+        /// <summary>
+        /// Gets the product by identifier should return one.
+        /// </summary>
         [TestMethod]
         public void GetProductByIdShouldReturnOne()
         {
@@ -135,6 +159,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(product.Id > 0);
         }
 
+        /// <summary>
+        /// Creates the product should create one.
+        /// </summary>
         [TestMethod]
         public void CreateProductShouldCreateOne()
         {
@@ -152,7 +179,10 @@ namespace CatalogManager.Test
             Assert.IsNotNull(product);
             Assert.IsTrue(product.Id > 0);
         }
-        
+
+        /// <summary>
+        /// Gets all productss should return all.
+        /// </summary>
         [TestMethod]
         public void GetAllProductssShouldReturnAll()
         {
@@ -168,6 +198,9 @@ namespace CatalogManager.Test
             Assert.IsTrue(products.Count() > 0);
         }
 
+        /// <summary>
+        /// Edits the product should succeed.
+        /// </summary>
         [TestMethod]
         public void EditProductShouldSucceed()
         {
@@ -186,6 +219,9 @@ namespace CatalogManager.Test
             Assert.AreNotEqual(name, product.Name);
         }
 
+        /// <summary>
+        /// Deletes the product should succeed.
+        /// </summary>
         [TestMethod]
         public void DeleteProductShouldSucceed()
         {
