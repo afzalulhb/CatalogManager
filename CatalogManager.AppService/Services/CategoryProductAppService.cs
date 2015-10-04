@@ -35,18 +35,18 @@ namespace CatalogManager.AppService.Services
         /// Returns top level Categories
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<CategoryDto> GetTopLevelCategories()
+        public async Task<IEnumerable<CategoryDto>> GetTopLevelCategoriesAsync()
         {
-            var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategory == null);
+            var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategory == null);
             return categories.ProjectedAsCollection<CategoryDto>();
         }
         /// <summary>
         /// Gets the category hierarchy.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<CategoryDto> GetCategoryHierarchy()
+        public async Task<IEnumerable<CategoryDto>> GetCategoryHierarchyAsync()
         {
-            var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategory == null);
+            var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategory == null);
             var categoryDtos = categories.ProjectedAsCollection<CategoryDto>();
             BuildCategoryHierarchy(categoryDtos);
             return categoryDtos;
@@ -71,9 +71,9 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="parentId">The parent identifier.</param>
         /// <returns></returns>
-        public IEnumerable<CategoryDto> GetCategoriesByParent(int parentId)
+        public async Task<IEnumerable<CategoryDto>> GetCategoriesByParentAsync(int parentId)
         {
-            var categories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == parentId);
+            var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategoryId == parentId);
             return categories.ProjectedAsCollection<CategoryDto>();
         }
 
@@ -81,10 +81,10 @@ namespace CatalogManager.AppService.Services
         /// Gets the categories.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<CategoryDto> GetCategories()
+        public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
         {
 
-            var categories = unitOfWork.Categories.GetAll();
+            var categories = await unitOfWork.Categories.GetAllAsync();
             return categories.ProjectedAsCollection<CategoryDto>();
         }
 
@@ -93,18 +93,18 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public CategoryDto CreateCategory(CategoryDto dto)
+        public async Task<CategoryDto> CreateCategoryAsync(CategoryDto dto)
         {
             ICategoryFactory factory = new CategoryFactory();
             var parentCategory = new Category();
             var productList = new List<Product>();
 
-            parentCategory = dto.ParentCategoryId.HasValue ? unitOfWork.Categories.GetById((int)dto.ParentCategoryId) : null;
+            parentCategory = dto.ParentCategoryId.HasValue ? await unitOfWork.Categories.GetByIdAsync((int)dto.ParentCategoryId) : null;
 
             var category = factory.CreateCategory(dto.Name, parentCategory, productList);
 
             unitOfWork.Categories.Insert(category);
-            unitOfWork.Save();
+            unitOfWork.SaveAsync();
 
             return category.ProjectedAs<CategoryDto>();
         }

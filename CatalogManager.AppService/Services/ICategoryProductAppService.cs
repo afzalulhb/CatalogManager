@@ -17,29 +17,32 @@ namespace CatalogManager.AppService.Services
         /// Gets the categories.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<CategoryDto> GetCategories();
+        
+        Task<IEnumerable<CategoryDto>> GetCategoriesAsync();
         /// <summary>
         /// Gets the top level categories.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<CategoryDto> GetTopLevelCategories();
+        
+        Task<IEnumerable<CategoryDto>> GetTopLevelCategoriesAsync();
         /// <summary>
         /// Gets the category hierarchy.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<CategoryDto> GetCategoryHierarchy();
+        
+        Task<IEnumerable<CategoryDto>> GetCategoryHierarchyAsync();
         /// <summary>
         /// Gets the categories by parent.
         /// </summary>
         /// <param name="parentId">The parent identifier.</param>
         /// <returns></returns>
-        IEnumerable<CategoryDto> GetCategoriesByParent(int parentId);
+        Task<IEnumerable<CategoryDto>> GetCategoriesByParentAsync(int parentId);
         /// <summary>
         /// Creates the category.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        CategoryDto CreateCategory(CategoryDto dto);
+        Task<CategoryDto> CreateCategoryAsync(CategoryDto dto);
         /// <summary>
         /// Gets the category by identifier.
         /// </summary>

@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net;
 using CatalogManager.AppService.Dtos;
 using System.Web.Http.Cors;
+using System.Threading.Tasks;
 
 /// <summary>
 /// 
@@ -50,9 +51,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage GetCategories()
+        public async Task<HttpResponseMessage> GetCategories()
         {
-            var result = categoryProductAppService.GetCategories();
+            var result = await categoryProductAppService.GetCategoriesAsync();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -62,9 +63,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("hierarchy")]
-        public HttpResponseMessage GetCategoryHierarchy()
+        public async Task<HttpResponseMessage> GetCategoryHierarchy()
         {
-            var result = categoryProductAppService.GetCategoryHierarchy();
+            var result = await categoryProductAppService.GetCategoryHierarchyAsync();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -74,9 +75,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("top")]
-        public HttpResponseMessage GetTopLevelCategories()
+        public async Task<HttpResponseMessage> GetTopLevelCategories()
         {
-            var result = categoryProductAppService.GetTopLevelCategories();
+            var result = await categoryProductAppService.GetTopLevelCategoriesAsync();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -87,9 +88,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("byparent/{id}")]
-        public HttpResponseMessage GetCategoriesByParent(int id)
+        public async Task<HttpResponseMessage> GetCategoriesByParent(int id)
         {
-            var result = categoryProductAppService.GetCategoriesByParent(id);
+            var result = await categoryProductAppService.GetCategoriesByParentAsync(id);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -100,9 +101,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage CreateCategory([FromBody] CategoryDto dto)
+        public async Task<HttpResponseMessage> CreateCategory([FromBody] CategoryDto dto)
         {
-            var result = categoryProductAppService.CreateCategory(dto);
+            var result = await categoryProductAppService.CreateCategoryAsync(dto);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 

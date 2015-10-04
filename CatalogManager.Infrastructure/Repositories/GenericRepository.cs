@@ -43,6 +43,15 @@ namespace CatalogManager.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await dbSet.ToListAsync();
+        }
+
+        /// <summary>
         /// Gets the by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -50,6 +59,15 @@ namespace CatalogManager.Infrastructure.Repositories
         public TEntity GetById(int id)
         {
             return dbSet.Find(id);
+        }
+        /// <summary>
+        /// Gets the by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await dbSet.FindAsync(id);
         }
 
         /// <summary>

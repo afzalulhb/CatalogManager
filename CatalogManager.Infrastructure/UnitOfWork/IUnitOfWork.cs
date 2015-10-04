@@ -1,6 +1,7 @@
 ﻿using CatalogManager.Domain.Entities;
 using CatalogManager.Infrastructure.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace CatalogManager.Infrastructure.UnitOfWork
 {
@@ -27,5 +28,9 @@ namespace CatalogManager.Infrastructure.UnitOfWork
         /// Saves this instance.
         /// </summary>
         void Save();
+        /// <summary>
+        /// Saves this instance.
+        /// </summary>
+        Task SaveAsync();
     }
 }

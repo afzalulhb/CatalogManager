@@ -11,6 +11,7 @@ using System.Net.Http;
 using CatalogManager.AppService.Dtos;
 using System.Web.Http.Hosting;
 using System.Web.Http;
+using System.Threading.Tasks;
 
 namespace CatalogManager.Test
 {
@@ -24,7 +25,7 @@ namespace CatalogManager.Test
         /// Gets the categories test.
         /// </summary>
         [TestMethod]
-        public void GetCategoriesTest()
+        public async Task GetCategoriesTest()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -35,7 +36,7 @@ namespace CatalogManager.Test
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             //Act
-            var response = controller.GetCategories();
+            var response = await controller.GetCategories();
 
             //Assert
             IEnumerable<CategoryDto> categories;
@@ -51,7 +52,7 @@ namespace CatalogManager.Test
         /// Gets the category hierarchy test.
         /// </summary>
         [TestMethod]
-        public void GetCategoryHierarchyTest()
+        public async Task GetCategoryHierarchyTest()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -62,7 +63,7 @@ namespace CatalogManager.Test
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             //Act
-            var response = controller.GetCategoryHierarchy();
+            var response = await controller.GetCategoryHierarchy();
 
             //Assert
             IEnumerable<CategoryDto> categories;
@@ -80,7 +81,7 @@ namespace CatalogManager.Test
         /// Gets the top level categories test.
         /// </summary>
         [TestMethod]
-        public void GetTopLevelCategoriesTest()
+        public async Task GetTopLevelCategoriesTest()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -91,7 +92,7 @@ namespace CatalogManager.Test
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             //Act
-            var response = controller.GetTopLevelCategories();
+            var response = await controller.GetTopLevelCategories();
 
             //Assert
             IEnumerable<CategoryDto> categories;
@@ -107,7 +108,7 @@ namespace CatalogManager.Test
         /// Gets the categories by parent should retrun one or more.
         /// </summary>
         [TestMethod]
-        public void GetCategoriesByParentShouldRetrunOneOrMore()
+        public async Task GetCategoriesByParentShouldRetrunOneOrMore()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -119,7 +120,7 @@ namespace CatalogManager.Test
             var parentId = 1;
 
             //Act
-            var response = controller.GetCategoriesByParent(parentId);
+            var response = await controller.GetCategoriesByParent(parentId);
 
             //Assert
             IEnumerable<CategoryDto> categories;
@@ -134,7 +135,7 @@ namespace CatalogManager.Test
         /// Creates the category should create one.
         /// </summary>
         [TestMethod]
-        public void CreateCategoryShouldCreateOne()
+        public async Task CreateCategoryShouldCreateOne()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -153,7 +154,7 @@ namespace CatalogManager.Test
             };
 
             //Act
-            var response = controller.CreateCategory(categoryDto);
+            var response = await controller.CreateCategory(categoryDto);
 
             //Assert
             CategoryDto category;
@@ -226,7 +227,7 @@ namespace CatalogManager.Test
         /// Deletes the category should delete.
         /// </summary>
         [TestMethod]
-        public void DeleteCategoryShouldDelete()
+        public async Task DeleteCategoryShouldDelete()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -245,7 +246,7 @@ namespace CatalogManager.Test
                 Products = new List<ProductDto>()
             };
 
-            var response = controller.CreateCategory(categoryDto);
+            var response = await controller.CreateCategory(categoryDto);
             CategoryDto categoryToDelete;
             response.TryGetContentValue<CategoryDto>(out categoryToDelete);
             categoryId = categoryToDelete.Id;

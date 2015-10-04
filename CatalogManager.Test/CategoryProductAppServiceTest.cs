@@ -6,6 +6,7 @@ using CatalogManager.AppService.Services;
 using CatalogManager.Infrastructure.UnitOfWork;
 using CatalogManager.Infrastructure;
 using CatalogManager.AppService.Dtos;
+using System.Threading.Tasks;
 
 namespace CatalogManager.Test
 {
@@ -20,7 +21,7 @@ namespace CatalogManager.Test
         /// Gets the top level categories should return.
         /// </summary>
         [TestMethod]
-        public void GetTopLevelCategoriesShouldReturn()
+        public async Task GetTopLevelCategoriesShouldReturn()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -28,7 +29,7 @@ namespace CatalogManager.Test
             ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
 
             // Act
-            var categories = appService.GetTopLevelCategories();
+            var categories = await appService.GetTopLevelCategoriesAsync();
 
             // Assert
             Assert.IsNotNull(categories);
@@ -44,7 +45,7 @@ namespace CatalogManager.Test
         /// Gets the categories should return all.
         /// </summary>
         [TestMethod]
-        public void GetCategoriesShouldReturnAll()
+        public async Task GetCategoriesAsyncShouldReturnAll()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -52,7 +53,7 @@ namespace CatalogManager.Test
             ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
 
             // Act
-            var categories = appService.GetCategories();
+            var categories = await appService.GetCategoriesAsync();
 
             // Assert
             Assert.IsNotNull(categories);
@@ -63,7 +64,7 @@ namespace CatalogManager.Test
         /// Gets the categories by parent return one.
         /// </summary>
         [TestMethod]
-        public void GetCategoriesByParentReturnOne()
+        public async Task GetCategoriesByParentReturnOne()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -72,7 +73,7 @@ namespace CatalogManager.Test
             int parentCategoryId = 1;
 
             // Act
-            var categories = appService.GetCategoriesByParent(parentCategoryId);
+            var categories = await appService.GetCategoriesByParentAsync(parentCategoryId);
 
             // Assert
             Assert.IsNotNull(categories);
@@ -83,7 +84,7 @@ namespace CatalogManager.Test
         /// Creates the category should create.
         /// </summary>
         [TestMethod]
-        public void CreateCategoryShouldCreate()
+        public async Task CreateCategoryShouldCreate()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -97,7 +98,7 @@ namespace CatalogManager.Test
             };
 
             // Act
-            categoryDto = appService.CreateCategory(categoryDto);
+            categoryDto = await appService.CreateCategoryAsync(categoryDto);
 
             // Assert
             Assert.IsNotNull(categoryDto);
@@ -153,7 +154,7 @@ namespace CatalogManager.Test
         /// Deletes the category should delete.
         /// </summary>
         [TestMethod]
-        public void DeleteCategoryShouldDelete()
+        public async Task DeleteCategoryShouldDelete()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -165,7 +166,7 @@ namespace CatalogManager.Test
                 ParentCategoryId = 1,
                 Products = new List<ProductDto>()
             };
-            categoryDto = appService.CreateCategory(categoryDto);
+            categoryDto = await appService.CreateCategoryAsync(categoryDto);
             int createdId = categoryDto.Id;
             Assert.IsTrue(createdId > 0);
 

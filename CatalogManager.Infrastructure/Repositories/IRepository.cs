@@ -18,11 +18,22 @@ namespace CatalogManager.Infrastructure.Repositories
         /// <returns></returns>
         IEnumerable<TEntity> GetAll();
         /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        /// <summary>
         /// Gets the by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         TEntity GetById(int id);
+        /// <summary>
+        /// Gets the by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<TEntity> GetByIdAsync(int id);
         /// <summary>
         /// Updates the specified entity.
         /// </summary>
