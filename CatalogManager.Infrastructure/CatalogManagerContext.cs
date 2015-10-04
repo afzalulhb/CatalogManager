@@ -1,7 +1,10 @@
 ﻿
 using CatalogManager.Domain.Entities;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using WebApplication1.Models.Mapping;
+using CatalogManager.Infrastructure.UnitOfWork;
 namespace CatalogManager.Infrastructure
 {
     /// <summary>
@@ -15,8 +18,14 @@ namespace CatalogManager.Infrastructure
         public CatalogManagerContext()
             : base("CatalogManager") 
         {
+            // Crate db if not exists
+            Database.SetInitializer<CatalogManagerContext>(new CatalogManagerDBInitializer());       
+            //Database.SetInitializer<SchoolDBContext>(new DropCreateDatabaseAlways<SchoolDBContext>());
+     
+            //Database.SetInitializer<CatalogManagerContext>(new DropCreateDatabaseIfModelChanges<CatalogManagerContext>());
+            
             // Prevent checking model change. We are aware of any change
-            Database.SetInitializer<CatalogManagerContext>(null);
+            //Database.SetInitializer<CatalogManagerContext>(null);
         }
 
         /// <summary>
@@ -37,8 +46,77 @@ namespace CatalogManager.Infrastructure
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            modelBuilder.Entity<Category>().ToTable("Category");
-            modelBuilder.Entity<Product>().ToTable("Product");
+            modelBuilder.Configurations.Add(new CategoryMap());
+            modelBuilder.Configurations.Add(new ProductMap());
+        }
+    }
+    public class CatalogManagerDBInitializer : CreateDatabaseIfNotExists<CatalogManagerContext>
+    {
+        protected override void Seed(CatalogManagerContext context)
+        {
+            SeedCategory(context);
+            base.Seed(context);
+        }
+
+        private void SeedCategory(CatalogManagerContext context)
+        {
+            IList<Category> categories = new List<Category>(){
+            new Category()
+            {
+                Name="Computers", 
+                ChildCategories= new List<Category>()
+                {
+                    new Category()
+                    {
+                        Name="Desktop-Computers",
+                        Products= new List<Product>()
+                        {
+                            new Product ()
+                            {
+                                Name="Lenovo Horizon II 27in Portable Desktop i5 1.7GHz 8GB 1TB WiFi",
+                                Description="Lenovo Horizon II 27in Portable Desktop i5 1.7GHz 8GB 1TB WiFi",
+                                Price=1091.00M
+                            },
+                            new Product ()
+                            {
+                                Name="Acer Aspire E 15.6\" Laptop - Black/Iron ",
+                                Description="Acer Aspire E 15.6\" Laptop - Black/Iron ",
+                                Price=599.99M
+                            },
+                            new Product ()
+                            {
+                                Name="HP Pavilion 15.6\" Laptop - Silver (Intel Core i5-5200U / 1TB HDD / 16GB RAM / Windows 8.1)",
+                                Description="HP Pavilion 15.6\" Laptop - Silver (Intel Core i5-5200U / 1TB HDD / 16GB RAM / Windows 8.1)",
+                                Price=729.99M
+                            },
+                            new Product ()
+                            {
+                                Name="ASUS 15.6\" Laptop - Black (Intel Pentium N3540 / 1TB HDD / 8GB RAM / Windows 8.1)",
+                                Description="ASUS 15.6\" Laptop - Black (Intel Pentium N3540 / 1TB HDD / 8GB RAM / Windows 8.1)",
+                                Price=479.99M
+                            },
+                            new Product ()
+                            {
+                                Name="Acer One 10.1\" Touch Convertible Laptop-Iron (Intel Atom Z3735F/32GB eMMc/2GB RAM)",
+                                Description="Acer One 10.1\" Touch Convertible Laptop-Iron (Intel Atom Z3735F/32GB eMMc/2GB RAM)",
+                                Price=299.99M
+                            }
+                        }
+                    }
+                }
+            },
+            new Category(){Name="Gaming"},
+            new Category(){Name="Audio & Video"},
+            new Category(){Name="Electronics"}
+            };
+
+            IUnitOfWork unitOfWork = new UnitOfWork.UnitOfWork(context);
+
+            foreach (Category cat in categories)
+            {
+                unitOfWork.Categories.Insert(cat);
+            }
+            unitOfWork.Save();
         }
     }
 }

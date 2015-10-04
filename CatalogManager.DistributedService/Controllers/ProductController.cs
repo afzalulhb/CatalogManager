@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net;
 using CatalogManager.AppService.Dtos;
 using System.Web.Http.Cors;
+using System.Threading.Tasks;
 
 namespace CatalogManager.DistributedService.Controllers
 {
@@ -47,9 +48,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("bycategory/{categoryId}")]
-        public HttpResponseMessage GetProductsByCategory(int categoryId)
+        public async Task<HttpResponseMessage> GetProductsByCategory(int categoryId)
         {
-            var result = categoryProductAppService.GetProductsByCategory(categoryId);
+            var result = await categoryProductAppService.GetProductsByCategoryAsync(categoryId);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -60,9 +61,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("byid/{id}")]
-        public HttpResponseMessage GetProductById(int id)
+        public async Task<HttpResponseMessage> GetProductById(int id)
         {
-            var result = categoryProductAppService.GetProductById(id);
+            var result = await categoryProductAppService.GetProductByIdAsync(id);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -73,9 +74,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        public HttpResponseMessage CreateProduct([FromBody] ProductDto dto)
+        public async Task<HttpResponseMessage> CreateProduct([FromBody] ProductDto dto)
         {
-            var result = categoryProductAppService.CreateProduct(dto);
+            var result = await categoryProductAppService.CreateProductAsync(dto);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -86,9 +87,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("")]
-        public HttpResponseMessage UpdateProduct([FromBody] ProductDto dto)
+        public async Task<HttpResponseMessage> UpdateProduct([FromBody] ProductDto dto)
         {
-            var result = categoryProductAppService.UpdateProduct(dto);
+            var result = await categoryProductAppService.UpdateProductAsync(dto);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -99,9 +100,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public HttpResponseMessage DeleteProduct(int id)
+        public async Task<HttpResponseMessage> DeleteProduct(int id)
         {
-            categoryProductAppService.DeleteProduct(id);
+            await categoryProductAppService.DeleteProductAsync(id);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

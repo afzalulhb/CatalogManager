@@ -104,7 +104,7 @@ namespace CatalogManager.AppService.Services
             var category = factory.CreateCategory(dto.Name, parentCategory, productList);
 
             unitOfWork.Categories.Insert(category);
-            unitOfWork.SaveAsync();
+            await unitOfWork.SaveAsync();
 
             return category.ProjectedAs<CategoryDto>();
         }
@@ -114,9 +114,9 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public CategoryDto GetCategoryById(int id)
+        public async Task<CategoryDto> GetCategoryByIdAsync(int id)
         {
-            var category = unitOfWork.Categories.GetById(id);
+            var category = await unitOfWork.Categories.GetByIdAsync(id);
             return category.ProjectedAs<CategoryDto>();
         }
 
@@ -125,12 +125,12 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public CategoryDto UpdateCategory(CategoryDto dto)
+        public async Task<CategoryDto> UpdateCategoryAsync(CategoryDto dto)
         {
-            var category = unitOfWork.Categories.GetById(dto.Id);
+            var category = await unitOfWork.Categories.GetByIdAsync(dto.Id);
             MaterializeCategory(category, dto);
             unitOfWork.Categories.Update(category);
-            unitOfWork.Save();
+            await unitOfWork.SaveAsync();
             return category.ProjectedAs<CategoryDto>();
 
         }
@@ -159,15 +159,15 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public ProductDto CreateProduct(ProductDto dto)
+        public async Task<ProductDto> CreateProductAsync(ProductDto dto)
         {
             IProductFactory factory = new ProductFactory();
-            var category = unitOfWork.Categories.GetById(dto.CategoryId);
+            var category = await unitOfWork.Categories.GetByIdAsync(dto.CategoryId);
 
             var product = factory.CreateProduct(dto.Name,dto.Description, dto.Price,category);
 
             unitOfWork.Products.Insert(product);
-            unitOfWork.Save();
+            await unitOfWork.SaveAsync();
 
             return product.ProjectedAs<ProductDto>();
         }
@@ -177,9 +177,9 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public ProductDto GetProductById(int id)
+        public async Task<ProductDto> GetProductByIdAsync(int id)
         {
-            var product = unitOfWork.Products.GetById(id);
+            var product = await unitOfWork.Products.GetByIdAsync(id);
             return product.ProjectedAs<ProductDto>();
         }
 
@@ -188,12 +188,12 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        public ProductDto UpdateProduct(ProductDto dto)
+        public async Task<ProductDto> UpdateProductAsync(ProductDto dto)
         {
-            var product = unitOfWork.Products.GetById(dto.Id);
+            var product = await unitOfWork.Products.GetByIdAsync(dto.Id);
             MaterializeProduct(product, dto); 
             unitOfWork.Products.Update(product);
-            unitOfWork.Save();
+            await unitOfWork.SaveAsync();
             return product.ProjectedAs<ProductDto>();
         }
 
@@ -201,11 +201,11 @@ namespace CatalogManager.AppService.Services
         /// Deletes the product.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        public void DeleteProduct(int id)
+        public async Task DeleteProductAsync(int id)
         {
-            var product = unitOfWork.Products.GetById(id);
+            var product = await unitOfWork.Products.GetByIdAsync(id);
             unitOfWork.Products.Delete(product);
-            unitOfWork.Save();
+            await unitOfWork.SaveAsync();
         }
 
         /// <summary>
@@ -213,9 +213,9 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="categoryId">The category identifier.</param>
         /// <returns></returns>
-        public IEnumerable<ProductDto> GetProductsByCategory(int categoryId)
+        public async Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(int categoryId)
         {
-            var products = unitOfWork.Products.GetAll().Where(x => x.CategoryId == categoryId).ToList();
+            var products = (await unitOfWork.Products.GetAllAsync()).Where(x => x.CategoryId == categoryId).ToList();
             return products.ProjectedAsCollection<ProductDto>();
         }
 

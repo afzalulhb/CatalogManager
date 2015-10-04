@@ -40,6 +40,14 @@ namespace CatalogManager.Domain.Entities
         /// The parent category.
         /// </value>
         public virtual Category ParentCategory { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the child categories.
+        /// </summary>
+        /// <value>
+        /// The child categories.
+        /// </value>
+        public virtual ICollection<Category> ChildCategories { get; set; }
 
         /// <summary>
         /// Gets or sets the products.

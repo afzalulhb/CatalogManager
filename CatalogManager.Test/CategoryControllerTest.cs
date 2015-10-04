@@ -169,7 +169,7 @@ namespace CatalogManager.Test
         /// Gets the category by identifier should return one.
         /// </summary>
         [TestMethod]
-        public void GetCategoryByIdShouldReturnOne()
+        public async Task GetCategoryByIdShouldReturnOne()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -180,7 +180,7 @@ namespace CatalogManager.Test
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
             int id = 1;
             //Act
-            var response = controller.GetCategoryById(id);
+            var response = await controller.GetCategoryById(id);
 
             //Assert
             CategoryDto category;
@@ -194,7 +194,7 @@ namespace CatalogManager.Test
         /// Updates the category should update.
         /// </summary>
         [TestMethod]
-        public void UpdateCategoryShouldUpdate()
+        public async Task UpdateCategoryShouldUpdate()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -206,13 +206,13 @@ namespace CatalogManager.Test
             string changedName = string.Format("Name changed at {0}", DateTime.Now);
             int id = 1;
             CategoryDto categoryToUpdate;
-            var response = controller.GetCategoryById(id);
+            var response = await controller.GetCategoryById(id);
             response.TryGetContentValue<CategoryDto>(out categoryToUpdate);
             Assert.IsNotNull(categoryToUpdate);
             categoryToUpdate.Name = changedName;
 
             //Act
-            response = controller.UpdateCategory(categoryToUpdate);
+            response = await controller.UpdateCategory(categoryToUpdate);
 
             //Assert
             CategoryDto category;
@@ -255,7 +255,7 @@ namespace CatalogManager.Test
 
             //Act
             response = controller.DeleteCategory(categoryId);
-            var getResponse = controller.GetCategoryById(categoryId);
+            var getResponse = await controller.GetCategoryById(categoryId);
 
             //Assert
             CategoryDto category;

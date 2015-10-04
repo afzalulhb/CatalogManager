@@ -8,17 +8,21 @@ catalogManager.controller('CatalogManagerController', ['$scope', '$rootScope', '
     $scope.cm = {};
     $scope.cm.categories = [];
     $scope.menuitems = [];
+    $scope.cm.dataLoading = true;
 
 
 
     $scope.init = function () {
+        $scope.cm.dataLoading = true;
             refreshMenu();
         };
 
-    var refreshMenu = function () {
+    var refreshMenu = function () {        
 
         $scope.menuitems = [];
         if (CMApi.Menu.query().$promise.then(function (data) {
+
+            $scope.cm.dataLoading = false;
                      if (angular.isArray(data)) {
                             $scope.menuitems = data;
                     }

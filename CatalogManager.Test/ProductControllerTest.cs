@@ -11,6 +11,7 @@ using CatalogManager.AppService.Dtos;
 using CatalogManager.DistributedService.Controllers;
 using System.Net.Http;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CatalogManager.Test
 {
@@ -25,7 +26,7 @@ namespace CatalogManager.Test
         /// Gets the products by category should retrun one or more.
         /// </summary>
         [TestMethod]
-        public void GetProductsByCategoryShouldRetrunOneOrMore()
+        public async Task GetProductsByCategoryShouldRetrunOneOrMore()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -37,7 +38,7 @@ namespace CatalogManager.Test
             var categoryId = 1;
 
             //Act
-            var response = controller.GetProductsByCategory(categoryId);
+            var response = await controller.GetProductsByCategory(categoryId);
 
             //Assert
             IEnumerable<ProductDto> products;
@@ -52,7 +53,7 @@ namespace CatalogManager.Test
         /// Gets the product by identifier should return one.
         /// </summary>
         [TestMethod]
-        public void GetProductByIdShouldReturnOne()
+        public async Task GetProductByIdShouldReturnOne()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -63,7 +64,7 @@ namespace CatalogManager.Test
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
             int id = 1;
             //Act
-            var response = controller.GetProductById(id);
+            var response = await controller.GetProductById(id);
 
             //Assert
             ProductDto product;
@@ -77,7 +78,7 @@ namespace CatalogManager.Test
         /// Creates the product should create one.
         /// </summary>
         [TestMethod]
-        public void CreateProductShouldCreateOne()
+        public async Task CreateProductShouldCreateOne()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -98,7 +99,7 @@ namespace CatalogManager.Test
             };
 
             //Act
-            var response = controller.CreateProduct(dto);
+            var response = await controller.CreateProduct(dto);
 
             //Assert
             ProductDto product;
@@ -114,7 +115,7 @@ namespace CatalogManager.Test
         /// Updates the product should update.
         /// </summary>
         [TestMethod]
-        public void UpdateProductShouldUpdate()
+        public async Task UpdateProductShouldUpdate()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -126,13 +127,13 @@ namespace CatalogManager.Test
             string changedName = string.Format("Name changed at {0}", DateTime.Now);
             int id = 1;
             ProductDto productToUpdate;
-            var response = controller.GetProductById(id);
+            var response = await  controller.GetProductById(id);
             response.TryGetContentValue<ProductDto>(out productToUpdate);
             Assert.IsNotNull(productToUpdate);
             productToUpdate.Name = changedName;
 
             //Act
-            response = controller.UpdateProduct(productToUpdate);
+            response = await controller.UpdateProduct(productToUpdate);
 
             //Assert
             ProductDto product;
@@ -147,7 +148,7 @@ namespace CatalogManager.Test
         /// Deletes the product should delete.
         /// </summary>
         [TestMethod]
-        public void DeleteProductShouldDelete()
+        public async Task DeleteProductShouldDelete()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -168,7 +169,7 @@ namespace CatalogManager.Test
                 CategoryId = 1
             };
 
-            var response = controller.CreateProduct(dto);
+            var response = await controller.CreateProduct(dto);
             ProductDto productToDelete;
             response.TryGetContentValue<ProductDto>(out productToDelete);
             productId = productToDelete.Id;
@@ -176,8 +177,8 @@ namespace CatalogManager.Test
             Assert.IsTrue(productToDelete.Id > 0);
 
             //Act
-            response = controller.DeleteProduct(productId);
-            var getResponse = controller.GetProductById(productId);
+            response = await controller.DeleteProduct(productId);
+            var getResponse = await  controller.GetProductById(productId);
 
             //Assert
             ProductDto product;

@@ -51,13 +51,15 @@
                 <div class="body-container menu-collapsed">
                     <div>
                         <div class="body-menu-container" ng-controller="CatalogManagerController">
-
+                            <div ng-if="cm.dataLoading">
+                                Loading...
+                            </div>
                             <!--<div class="menu-title" hub-menu-toggle>-->
                                 <div class="menu-title">
                                     <span class="fa fa-caret-right"></span>
                                     <div class="menu-label">
                                         <a ng-href="#/" >
-                                        <span class="nav-label">HOME</span>
+                                        <span class="nav-label">HOME{{data.dataLoading}}</span>
                                         </a>
                                     </div>
                                 </div><br />

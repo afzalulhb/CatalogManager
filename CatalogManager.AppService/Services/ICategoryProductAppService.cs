@@ -16,45 +16,49 @@ namespace CatalogManager.AppService.Services
         /// <summary>
         /// Gets the categories.
         /// </summary>
-        /// <returns></returns>
-        
+        /// <returns></returns>        
         Task<IEnumerable<CategoryDto>> GetCategoriesAsync();
+        
         /// <summary>
         /// Gets the top level categories.
         /// </summary>
-        /// <returns></returns>
-        
+        /// <returns></returns>        
         Task<IEnumerable<CategoryDto>> GetTopLevelCategoriesAsync();
+        
         /// <summary>
         /// Gets the category hierarchy.
         /// </summary>
-        /// <returns></returns>
-        
+        /// <returns></returns>        
         Task<IEnumerable<CategoryDto>> GetCategoryHierarchyAsync();
+        
         /// <summary>
         /// Gets the categories by parent.
         /// </summary>
         /// <param name="parentId">The parent identifier.</param>
         /// <returns></returns>
         Task<IEnumerable<CategoryDto>> GetCategoriesByParentAsync(int parentId);
+        
         /// <summary>
         /// Creates the category.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
         Task<CategoryDto> CreateCategoryAsync(CategoryDto dto);
+        
         /// <summary>
         /// Gets the category by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        CategoryDto GetCategoryById(int id);
+        Task<CategoryDto> GetCategoryByIdAsync(int id);
+        
         /// <summary>
         /// Updates the category.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        CategoryDto UpdateCategory(CategoryDto dto);
+        Task<CategoryDto> UpdateCategoryAsync(CategoryDto dto);
+        
         /// <summary>
         /// Deletes the category.
         /// </summary>
@@ -67,29 +71,33 @@ namespace CatalogManager.AppService.Services
         /// </summary>
         /// <param name="categoryId">The category identifier.</param>
         /// <returns></returns>
-        IEnumerable<ProductDto> GetProductsByCategory(int categoryId);
+        Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(int categoryId);
+        
         /// <summary>
         /// Creates the product.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        ProductDto CreateProduct(ProductDto dto);
+        Task<ProductDto> CreateProductAsync(ProductDto dto);
+        
         /// <summary>
         /// Gets the product by identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        ProductDto GetProductById(int id);
+        Task<ProductDto> GetProductByIdAsync(int id);
+        
         /// <summary>
         /// Updates the product.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns></returns>
-        ProductDto UpdateProduct(ProductDto dto);
+        Task<ProductDto> UpdateProductAsync(ProductDto dto);
+       
         /// <summary>
         /// Deletes the product.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        void DeleteProduct(int id);
+        Task DeleteProductAsync(int id);
     }
 }

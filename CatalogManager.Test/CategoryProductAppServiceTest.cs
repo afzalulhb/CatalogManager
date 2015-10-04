@@ -109,7 +109,7 @@ namespace CatalogManager.Test
         /// Gets the category by identifier should return one.
         /// </summary>
         [TestMethod]
-        public void GetCategoryByIdShouldReturnOne()
+        public async Task GetCategoryByIdShouldReturnOne()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -118,7 +118,7 @@ namespace CatalogManager.Test
             int id = 1;
 
             // Act
-            var category = appService.GetCategoryById(id);
+            var category = await appService.GetCategoryByIdAsync(id);
 
             // Assert
             Assert.IsNotNull(category);
@@ -129,7 +129,7 @@ namespace CatalogManager.Test
         /// Updates the category should update.
         /// </summary>
         [TestMethod]
-        public void UpdateCategoryShouldUpdate()
+        public async Task UpdateCategoryShouldUpdate()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -137,12 +137,12 @@ namespace CatalogManager.Test
             ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
             string changedName = string.Format("Name changed at {0}", DateTime.Now);
             int id = 1;
-            var category = appService.GetCategoryById(id);
+            var category = await appService.GetCategoryByIdAsync(id);
 
             // Act
             Assert.IsTrue(category.Name != changedName);
             category.Name = changedName;
-            category = appService.UpdateCategory(category);
+            category = await appService.UpdateCategoryAsync(category);
 
             // Assert
             Assert.IsNotNull(category);
@@ -172,7 +172,7 @@ namespace CatalogManager.Test
 
             // Act
             appService.DeleteCategory(createdId);
-            var deletedCategoryDto = appService.GetCategoryById(createdId);
+            var deletedCategoryDto = await appService.GetCategoryByIdAsync(createdId);
 
             // Assert
             Assert.IsNull(deletedCategoryDto);
@@ -186,7 +186,7 @@ namespace CatalogManager.Test
         /// Creates the product should create.
         /// </summary>
         [TestMethod]
-        public void CreateProductShouldCreate()
+        public async Task CreateProductShouldCreate()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -201,7 +201,7 @@ namespace CatalogManager.Test
             };
 
             // Act
-            dto = appService.CreateProduct(dto);
+            dto = await appService.CreateProductAsync(dto);
 
             // Assert
             Assert.IsNotNull(dto);
@@ -212,7 +212,7 @@ namespace CatalogManager.Test
         /// Gets the products by category should return one or more.
         /// </summary>
         [TestMethod]
-        public void GetProductsByCategoryShouldReturnOneOrMore()
+        public async Task GetProductsByCategoryShouldReturnOneOrMore()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -221,7 +221,7 @@ namespace CatalogManager.Test
             int categoryId = 1;
 
             // Act
-            var products = appService.GetProductsByCategory(categoryId);
+            var products = await appService.GetProductsByCategoryAsync(categoryId);
 
             // Assert
             Assert.IsNotNull(products);
@@ -232,7 +232,7 @@ namespace CatalogManager.Test
         /// Gets the product by identifier should return one.
         /// </summary>
         [TestMethod]
-        public void GetProductByIdShouldReturnOne()
+        public async Task GetProductByIdShouldReturnOne()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -241,7 +241,7 @@ namespace CatalogManager.Test
             int id = 1;
 
             // Act
-            var product = appService.GetProductById(id);
+            var product = await appService.GetProductByIdAsync(id);
 
             // Assert
             Assert.IsNotNull(product);
@@ -252,7 +252,7 @@ namespace CatalogManager.Test
         /// Updates the product should update.
         /// </summary>
         [TestMethod]
-        public void UpdateProductShouldUpdate()
+        public async Task UpdateProductShouldUpdate()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -260,7 +260,8 @@ namespace CatalogManager.Test
             ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
             string changedName = string.Format("Name changed at {0}", DateTime.Now);
             string changedDescription = "Changed Description";
-            var product = appService.GetProductById(1);
+            int id = 1;
+            var product = await appService.GetProductByIdAsync(id);
             var price = 11.11M;
 
             // Act
@@ -268,7 +269,7 @@ namespace CatalogManager.Test
             product.Name = changedName;
             product.Description = changedDescription;
             product.Price = price;
-            product = appService.UpdateProduct(product);
+            product = await appService.UpdateProductAsync(product);
 
             // Assert
             Assert.IsNotNull(product);
@@ -282,7 +283,7 @@ namespace CatalogManager.Test
         /// Deletes the product should delete.
         /// </summary>
         [TestMethod]
-        public void DeleteProductShouldDelete()
+        public async Task DeleteProductShouldDelete()
         {
             // Arrange 
             var context = new CatalogManagerContext();
@@ -295,13 +296,13 @@ namespace CatalogManager.Test
                 Price = 100.00M,
                 CategoryId = 1
             };
-            dto = appService.CreateProduct(dto);
+            dto = await appService.CreateProductAsync(dto);
             int createdId = dto.Id;
             Assert.IsTrue(createdId > 0);
 
             // Act
-            appService.DeleteProduct(createdId);
-            var deletedProductDto = appService.GetProductById(createdId);
+            await appService.DeleteProductAsync(createdId);
+            var deletedProductDto = await appService.GetProductByIdAsync(createdId);
 
             // Assert
             Assert.IsNull(deletedProductDto);

@@ -115,9 +115,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("byid/{id}")]
-        public HttpResponseMessage GetCategoryById(int id)
+        public async Task<HttpResponseMessage> GetCategoryById(int id)
         {
-            var result = categoryProductAppService.GetCategoryById(id);
+            var result = await categoryProductAppService.GetCategoryByIdAsync(id);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
@@ -128,9 +128,9 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("")]
-        public HttpResponseMessage UpdateCategory([FromBody] CategoryDto dto)
+        public async Task<HttpResponseMessage> UpdateCategory([FromBody] CategoryDto dto)
         {
-            var result = categoryProductAppService.UpdateCategory(dto);
+            var result = await categoryProductAppService.UpdateCategoryAsync(dto);
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 

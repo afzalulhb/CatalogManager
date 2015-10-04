@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CatalogManager.Infrastructure.UnitOfWork;
 using CatalogManager.Infrastructure;
 using CatalogManager.Domain.Entities;
+using System.Threading.Tasks;
 
 namespace CatalogManager.Test
 {
@@ -57,17 +58,18 @@ namespace CatalogManager.Test
         /// Creates the child category should create one.
         /// </summary>
         [TestMethod]
-        public void CreateChildCategoryShouldCreateOne()
+        public async Task CreateChildCategoryShouldCreateOne()
         {
             // Arrange
             var context = new CatalogManagerContext();
             IUnitOfWork unitOfWork = new UnitOfWork(context);
-            var parentCategory = unitOfWork.Categories.GetById(4);
+            int id = 4;
+            var parentCategory = await unitOfWork.Categories.GetByIdAsync(id);
             var category = new Category() { Name = "Test Category", ParentCategory = parentCategory, Products = null };
 
             // Act
             unitOfWork.Categories.Insert(category);
-            unitOfWork.Save();
+            await unitOfWork.SaveAsync();
 
             // Assert
             Assert.IsNotNull(category);
