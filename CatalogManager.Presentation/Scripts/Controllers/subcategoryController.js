@@ -10,10 +10,10 @@ catalogManager.controller('SubcategoryController', ['$scope', 'CMApi', '$http', 
     $scope.cm.id;
 
     $scope.tableProductColumns = [
-             { index: 0, type: 'text', name: 'Name', text: 'Name', style: 'col-sm-1' },
-             { index: 1, type: 'text', name: 'Description', text: 'Description', style: 'col-sm-1' },
+             { index: 0, type: 'text', name: 'Name', text: 'Name', style: 'col-sm-3' },
+             { index: 1, type: 'text', name: 'Description', text: 'Description', style: 'col-sm-3' },
              { index: 2, type: 'currency', name: 'Price', text: 'Price', style: 'col-sm-1' },
-             { index: 5, type: 'nav', name: 'Action', text: 'Action', style: 'col-sm-5' }
+             { index: 3, type: 'nav', name: 'Action', text: 'Action', style: 'col-sm-1' }
     ];
 
     $scope.init = function () {

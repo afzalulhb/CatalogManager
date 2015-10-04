@@ -1,7 +1,8 @@
 ﻿<div class="page-container" ng-cloak>
-
+    <h4><span>Category</span></h4>
+    <br />
+    <br />
     <div class="row">
-        <br />
         <div>
             <span><a href="#/cat/edit/{{cm.id}}">+ Add New Subcategory</a></span>
         </div>
@@ -36,16 +37,15 @@
         </table>
     </div>
     <br />
-    <div>
-        <span><a href="#/product/{{cm.id}}">+ Add New Product</a></span>
-    </div>
-    <br />
-    <span style="font-size: small; font-weight: bold; color: #C20009;">
-        Products
-    </span>
-    <br />
-    <br />
     <div class="row">
+        <div>
+            <span><a href="#/product/{{cm.id}}">+ Add New Product</a></span>
+        </div>
+        <br />
+        <span style="font-size: small; font-weight: bold; color: #C20009;">
+            Products
+        </span>
+        <br />
         <table class="table" id="tableProduct">
             <thead>
                 <tr class="redheader">

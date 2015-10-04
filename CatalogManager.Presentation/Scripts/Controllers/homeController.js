@@ -8,8 +8,8 @@ catalogManager.controller('HomeController', ['$scope', 'CMApi', '$http', '$locat
     $scope.CategoryList = [];
 
     $scope.tableCategoryColumns = [
-			  { index: 0, type: 'text', name: 'Name', text: 'Name', style: 'col-sm-6' },
-			  { index: 1, type: 'nav', name: 'Action', text: 'Action', style: 'col-sm-6' }
+			  { index: 0, type: 'text', name: 'Name', text: 'Name', style: 'col-sm-8' },
+			  { index: 1, type: 'nav', name: 'Action', text: 'Action', style: 'col-sm-2' }
     ];
 
     $scope.init = function () {
