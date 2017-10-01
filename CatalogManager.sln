@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogManager.ApplicationServices", "CatalogManager.ApplicationServices", "{43CC8B41-0C35-4809-9F77-BC92437E317D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogManager.DistributedServices", "CatalogManager.DistributedServices", "{FB27C81D-4F26-4C11-825C-9026FBE20108}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogManager.Domain", "CatalogManager.Domain", "{0588894B-3245-48F7-AD47-DB1CFF0D60CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogManager.Infrastructure", "CatalogManager.Infrastructure", "{FAEE909B-2F6D-4C23-B734-B73CD68DF070}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogManager.Presentation", "CatalogManager.Presentation", "{94B1B7C3-B6DC-4292-A1A9-E588A29A54B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogManager.Test", "CatalogManager.Test", "{98218A10-C0F4-43FF-88F6-9B49B9C7C3E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{691C7F22-044A-484C-9FE8-C77367D5CD53}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Users\Afzalul\Desktop\CatalogManager-CatalogManager\Database\Schema.sql = ..\..\Users\Afzalul\Desktop\CatalogManager-CatalogManager\Database\Schema.sql
+		..\..\Users\Afzalul\Desktop\CatalogManager-CatalogManager\Database\Seed.sql = ..\..\Users\Afzalul\Desktop\CatalogManager-CatalogManager\Database\Seed.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManager.DistributedService", "CatalogManager.DistributedService\CatalogManager.DistributedService.csproj", "{E65B06C7-88E6-4BB5-915C-877CE1AB8D4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManager.AppService", "CatalogManager.AppService\CatalogManager.AppService.csproj", "{2D201CB8-7703-46D0-A840-31761BD84141}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManager.Domain", "CatalogManager.Domain\CatalogManager.Domain.csproj", "{1416636C-C026-4378-A20E-CA1FD6EA47F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManager.Infrastructure", "CatalogManager.Infrastructure\CatalogManager.Infrastructure.csproj", "{ABE640CC-C9B9-4C79-9DD8-A3CE7FAD811B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManager.Presentation", "CatalogManager.Presentation\CatalogManager.Presentation.csproj", "{D378CC9B-1525-4959-81C5-BEDD892761D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManager.Test", "CatalogManager.Test\CatalogManager.Test.csproj", "{6B736F78-FC48-4C12-B2E1-995F7DA567A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManager.Infrastructure.CrossCutting", "CatalogManager.Infrastructure\CatalogManager.Infrastructure.Crosscutting\CatalogManager.Infrastructure.CrossCutting.csproj", "{21E359C7-A2F3-4EBB-B219-978F53FDE471}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E65B06C7-88E6-4BB5-915C-877CE1AB8D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E65B06C7-88E6-4BB5-915C-877CE1AB8D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E65B06C7-88E6-4BB5-915C-877CE1AB8D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E65B06C7-88E6-4BB5-915C-877CE1AB8D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D201CB8-7703-46D0-A840-31761BD84141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D201CB8-7703-46D0-A840-31761BD84141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D201CB8-7703-46D0-A840-31761BD84141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D201CB8-7703-46D0-A840-31761BD84141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1416636C-C026-4378-A20E-CA1FD6EA47F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1416636C-C026-4378-A20E-CA1FD6EA47F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1416636C-C026-4378-A20E-CA1FD6EA47F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1416636C-C026-4378-A20E-CA1FD6EA47F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABE640CC-C9B9-4C79-9DD8-A3CE7FAD811B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABE640CC-C9B9-4C79-9DD8-A3CE7FAD811B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABE640CC-C9B9-4C79-9DD8-A3CE7FAD811B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABE640CC-C9B9-4C79-9DD8-A3CE7FAD811B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D378CC9B-1525-4959-81C5-BEDD892761D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D378CC9B-1525-4959-81C5-BEDD892761D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D378CC9B-1525-4959-81C5-BEDD892761D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D378CC9B-1525-4959-81C5-BEDD892761D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B736F78-FC48-4C12-B2E1-995F7DA567A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B736F78-FC48-4C12-B2E1-995F7DA567A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B736F78-FC48-4C12-B2E1-995F7DA567A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B736F78-FC48-4C12-B2E1-995F7DA567A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21E359C7-A2F3-4EBB-B219-978F53FDE471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E359C7-A2F3-4EBB-B219-978F53FDE471}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E359C7-A2F3-4EBB-B219-978F53FDE471}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E359C7-A2F3-4EBB-B219-978F53FDE471}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E65B06C7-88E6-4BB5-915C-877CE1AB8D4B} = {FB27C81D-4F26-4C11-825C-9026FBE20108}
+		{2D201CB8-7703-46D0-A840-31761BD84141} = {43CC8B41-0C35-4809-9F77-BC92437E317D}
+		{1416636C-C026-4378-A20E-CA1FD6EA47F8} = {0588894B-3245-48F7-AD47-DB1CFF0D60CA}
+		{ABE640CC-C9B9-4C79-9DD8-A3CE7FAD811B} = {FAEE909B-2F6D-4C23-B734-B73CD68DF070}
+		{D378CC9B-1525-4959-81C5-BEDD892761D7} = {94B1B7C3-B6DC-4292-A1A9-E588A29A54B1}
+		{6B736F78-FC48-4C12-B2E1-995F7DA567A2} = {98218A10-C0F4-43FF-88F6-9B49B9C7C3E7}
+		{21E359C7-A2F3-4EBB-B219-978F53FDE471} = {FAEE909B-2F6D-4C23-B734-B73CD68DF070}
+	EndGlobalSection
+EndGlobal

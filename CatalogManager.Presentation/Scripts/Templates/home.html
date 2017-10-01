@@ -1,0 +1,39 @@
+﻿<div class="page-container" ng-cloak>
+
+    <div class="row">
+        <br />
+        <div>
+            <span><a href="#/cat/new">+ Add a Category</a></span>
+        </div>
+        <br />
+        <span style="font-size: small; font-weight: bold; color: #C20009;">
+            Categories
+        </span>
+        <br />
+        <table class="table" id="tableCategory">
+            <thead>
+                <tr class="redheader">
+                    <th class="text-left {{column.style}}" ng-repeat="column in tableCategoryColumns" ng-class="{'cursorPointer': column.text.length>0}">
+                        <span ng-class="{'mgr-col-min': column.type=='icon'||column.type=='image' }" class="headertext">
+                            {{(column.text)}}
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(i, item) in cvCategoryData.items" ng-class-odd="'odddata'" ng-class-even="'evendata'">
+                    <td class="text-left {{column.style}} " ng-switch="column.type" ng-repeat="column in tableCategoryColumns" align="center">
+                        <span ng-switch-when="text">{{item[column.name]}}</span>
+                        <span ng-switch-when="nav">
+                            <div class="btn-group">
+                                <span><a href="#/cat/edit/{{item.ParentCategoryId}}/{{item.Id}}">Edit</a></span>
+                                <span><a href="#/cat/edit/{{item.ParentCategoryId}}/{{item.Id}}">Delete</a></span>
+                            </div>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />  
+</div>

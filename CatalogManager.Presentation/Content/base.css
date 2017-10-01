@@ -1,0 +1,91 @@
+﻿
+.body-menu-container .menu-label {
+    /*float: left;
+    margin-left: 32px;*/
+    color: #333;
+}
+
+    .body-menu-container .menu-label span {
+        font-style: normal;
+        font-size: 16px;
+        text-transform: uppercase;
+        /*display: inline-block;*/
+    }
+
+
+.body-menu-container .nav {
+    list-style: none;
+    font-size: 14px;
+}
+
+    .body-menu-container .nav > li {
+        background-color: #f7f7f7;
+        border-bottom: 1px solid #ddd;
+        position: static;
+        display: block;
+    }
+
+        .body-menu-container .nav > li > a {
+        color: #0094ff;
+            padding: 10px 10px 10px 32px;
+            cursor: pointer;
+            display: block;
+            position: static;
+        }
+
+            .body-menu-container .nav > li > a.noCursor {
+                cursor: default;
+            }
+
+            .body-menu-container .nav > li > a:hover,
+            .body-menu-container .nav > li > a:focus {
+                background-color: transparent;
+            }
+
+.body-menu-container > .nav > li > i {
+    display: block;
+    float: left;
+    padding: 13px 10px 13px 15px;
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+}
+.body-menu-container .nav.nav-second-level > li {
+    /*border-bottom: 1px solid #ddd;*/
+    background-color: #ffffff;
+}
+
+    .body-menu-container .nav.nav-second-level > li > a {
+        border-left: 4px solid transparent;
+        padding-left: 55px;
+        color: #0094ff;
+        margin: 0;
+    }
+
+    .body-menu-container .nav .nav-second-level > li > i {
+        float: right;
+        width: 20px;
+        margin: 8px 10px 0 6px;
+        font-size: 16px;
+        width: 9px;
+        text-align: center;
+        color: #939598;
+        cursor: pointer;
+    }
+
+.body-menu-container .nav-second-level li a {
+    padding: 10px;
+    padding-left: 52px;
+    font-size: 14px;
+    transition: padding-left 0.5s;
+}
+
+.body-menu-container .nav-second-level li:last-child {
+    margin-bottom: -1px;
+}
+
+/*.body-menu-container .nav-second-level {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}*/

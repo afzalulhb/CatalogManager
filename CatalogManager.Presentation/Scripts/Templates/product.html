@@ -1,0 +1,50 @@
+﻿<div class="page-container" ng-cloak>
+    <h4><span>Product</span></h4>
+    <br />
+    <br />
+    <form name="productForm" ng-submit="submitForm()">
+        <div class="row">
+            <div class="col-md-2">
+                    <label class="control-label">Name</label>
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="name" ng-model="cm.Product.Name" class="nameText" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label">Description</label>
+            </div>
+            <div class="col-md-6">
+                <textarea name="description" ng-model="cm.Product.Description" class="nameText" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label">Price</label>
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="price" ng-model="cm.Product.Price"  />
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button type="submit" class="btn-save primaryBtn">SAVE</button>
+                <button type="button" class="btn-cancel secondaryBtn" ng-click="cancel()">CANCEL</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn-delete secondaryBtn" ng-click="delete()">DELETE</button>
+            </div>
+        </div>
+    </form>
+    <br />
+    <br />
+    <div class="row row-centered">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    </div>
+</div>

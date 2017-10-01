@@ -1,0 +1,32 @@
+﻿<div class="page-container" ng-cloak>
+    <h4><span>Category</span></h4>
+    <br />
+    <br />
+    <form name="categoryForm" ng-submit="submitForm()">
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label">Name</label>
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="name" ng-model="cm.Category.Name" class="nameText" />
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button type="submit" class="btn-save primaryBtn">SAVE</button>
+                <button type="button" class="btn-cancel secondaryBtn" ng-click="cancel()">CANCEL</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn-delete secondaryBtn" ng-click="delete()">DELETE</button>
+            </div>
+        </div>
+    </form>
+    <br />
+    <br />
+    <div class="row row-centered">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    </div>
+</div>
