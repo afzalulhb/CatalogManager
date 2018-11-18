@@ -21,7 +21,7 @@ catalogManager.controller('SubcategoryController', ['$scope', 'CMApi', '$http', 
         CMApi.ProductByCategoryId.query({ categoryId: $scope.cm.id }).$promise.then(function (data) {
             if ($scope.ProductList) $scope.ProductList.splice(0, $scope.ProductList.length);
             $scope.CreateProductList(data);
-        })
+        });
     };
 
     $scope.CreateProductList = function (data) {

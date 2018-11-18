@@ -16,7 +16,7 @@ catalogManager.controller('HomeController', ['$scope', 'CMApi', '$http', '$locat
         CMApi.Categories.query().$promise.then(function (data) {
             if ($scope.CategoryList) $scope.CategoryList.splice(0, $scope.CategoryList.length);
             $scope.CreateCategoryList(data);
-        })
+        });
     };
 
 

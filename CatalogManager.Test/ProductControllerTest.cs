@@ -12,6 +12,8 @@ using CatalogManager.DistributedService.Controllers;
 using System.Net.Http;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web.Http.Results;
+using NSubstitute;
 
 namespace CatalogManager.Test
 {
@@ -21,6 +23,11 @@ namespace CatalogManager.Test
     [TestClass]
     public class ProductControllerTest
     {
+        private ICategoryProductAppService _appService;
+        public ProductControllerTest()
+        {
+            _appService = Substitute.For<ICategoryProductAppService>();
+        }
 
         /// <summary>
         /// Gets the products by category should retrun one or more.
@@ -29,25 +36,29 @@ namespace CatalogManager.Test
         public async Task GetProductsByCategoryShouldRetrunOneOrMore()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new ProductController(appService);
+            var dtos = new List<ProductDto>{ new ProductDto()
+            {
+                Name = "Test Product",
+                Description = "Test Product",
+                Price = 10.00M,
+                CategoryId = 1
+            }};
+
+            _appService.GetProductsByCategoryAsync(Arg.Any<int>()).Returns(dtos);
+            var controller = new ProductController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
             var categoryId = 1;
 
             //Act
             var response = await controller.GetProductsByCategory(categoryId);
+            var result = response as OkNegotiatedContentResult<IEnumerable<ProductDto>>;
 
             //Assert
-            IEnumerable<ProductDto> products;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<IEnumerable<ProductDto>>(out products));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(products.Count() > 0);
-            Assert.IsTrue(products.ElementAt(0).CategoryId == categoryId);
-        }
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Count() > 0);
+            Assert.IsTrue(result.Content.ElementAt(0).CategoryId == categoryId);
+          }
 
         /// <summary>
         /// Gets the product by identifier should return one.
@@ -56,22 +67,29 @@ namespace CatalogManager.Test
         public async Task GetProductByIdShouldReturnOne()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new ProductController(appService);
+            var dto = new ProductDto()
+            {
+                Id = 1,
+                Name = "Test Product",
+                Description = "Test Product",
+                Price = 10.00M,
+                CategoryId = 1
+            };
+
+            _appService.GetProductByIdAsync(Arg.Any<int>()).Returns(dto);
+
+            var controller = new ProductController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
             int id = 1;
+            
             //Act
             var response = await controller.GetProductById(id);
-
+            var result = response as OkNegotiatedContentResult<ProductDto>;
+            
             //Assert
-            ProductDto product;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<ProductDto>(out product));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(product.Id == id);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Id == id);
         }
 
         /// <summary>
@@ -79,36 +97,30 @@ namespace CatalogManager.Test
         /// </summary>
         [TestMethod]
         public async Task CreateProductShouldCreateOne()
-        {
+        {          
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new ProductController(appService);
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            string name = string.Format("Test product created at {0}", DateTime.Now);
-            decimal price = 111.11M;
-
             var dto = new ProductDto()
             {
-                Name = name,
-                Description = "",
-                Price = price,
+                Id = 1,
+                Name = "Test Product",
+                Description = "Test Product",
+                Price = 10.00M,
                 CategoryId = 1
             };
 
+            _appService.CreateProductAsync(Arg.Any<ProductDto>()).Returns(dto);
+            var controller = new ProductController(_appService);
+
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+
             //Act
             var response = await controller.CreateProduct(dto);
+            var result = response as OkNegotiatedContentResult<ProductDto>;
 
             //Assert
-            ProductDto product;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<ProductDto>(out product));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(product.Id > 0);
-            Assert.IsTrue(product.Name == name);
-            Assert.IsTrue(product.Price  == price);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Id == 1);
         }
 
         /// <summary>
@@ -118,30 +130,37 @@ namespace CatalogManager.Test
         public async Task UpdateProductShouldUpdate()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new ProductController(appService);
+            var sourceDto = new ProductDto()
+            {
+                Id = 1,
+                Name = "Test Product",
+                Description = "Test Product",
+                Price = 10.00M,
+                CategoryId = 1
+            };
+            var dto = new ProductDto()
+            {
+                Id = 1,
+                Name = "Update Test Product",
+                Description = "Test Product",
+                Price = 10.00M,
+                CategoryId = 1
+            };
+
+            _appService.UpdateProductAsync(Arg.Any<ProductDto>()).Returns(dto);
+            var controller = new ProductController(_appService);
+
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            string changedName = string.Format("Name changed at {0}", DateTime.Now);
-            int id = 1;
-            ProductDto productToUpdate;
-            var response = await  controller.GetProductById(id);
-            response.TryGetContentValue<ProductDto>(out productToUpdate);
-            Assert.IsNotNull(productToUpdate);
-            productToUpdate.Name = changedName;
 
             //Act
-            response = await controller.UpdateProduct(productToUpdate);
+            var response = await controller.UpdateProduct(dto);
+            var result = response as OkNegotiatedContentResult<ProductDto>;
 
             //Assert
-            ProductDto product;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<ProductDto>(out product));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(product.Id == id);
-            Assert.IsTrue(product.Name == changedName);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Id == 1);
+            Assert.IsTrue(result.Content.Name == "Update Test Product");
         }
 
         /// <summary>
@@ -151,41 +170,20 @@ namespace CatalogManager.Test
         public async Task DeleteProductShouldDelete()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new ProductController(appService);
+            var id = 1;
+            await _appService.DeleteProductAsync(Arg.Any<int>());
+            var controller = new ProductController(_appService);
+
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            string name = string.Format("Test product created at {0}", DateTime.Now);
-            decimal price = 111.11M;
-            int productId = 0;
-
-            var dto = new ProductDto()
-            {
-                Name = name,
-                Description = "",
-                Price = price,
-                CategoryId = 1
-            };
-
-            var response = await controller.CreateProduct(dto);
-            ProductDto productToDelete;
-            response.TryGetContentValue<ProductDto>(out productToDelete);
-            productId = productToDelete.Id;
-            Assert.IsNotNull(productToDelete);
-            Assert.IsTrue(productToDelete.Id > 0);
 
             //Act
-            response = await controller.DeleteProduct(productId);
-            var getResponse = await  controller.GetProductById(productId);
+            var response = await controller.DeleteProduct(id);
+            var result = response as OkNegotiatedContentResult<string>;
 
             //Assert
-            ProductDto product;
-            Assert.IsNotNull(getResponse);
-            Assert.IsTrue(!getResponse.TryGetContentValue<ProductDto>(out product));
-            Assert.IsTrue(getResponse.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(product == null);
+            Assert.IsNotNull(result.Content);
+            Assert.IsTrue(result.Content == "Successfully deleted.");
         }
     }
 }

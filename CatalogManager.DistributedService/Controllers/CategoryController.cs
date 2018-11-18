@@ -26,7 +26,7 @@ namespace CatalogManager.DistributedService.Controllers
         /// <summary>
         /// The category product application service
         /// </summary>
-        private readonly ICategoryProductAppService categoryProductAppService;
+        private readonly ICategoryProductAppService _appService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryController"/> class.
@@ -43,7 +43,7 @@ namespace CatalogManager.DistributedService.Controllers
         /// <param name="service">The service.</param>
         public CategoryController(ICategoryProductAppService service)
         {
-            categoryProductAppService = service;
+            _appService = service;
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace CatalogManager.DistributedService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<HttpResponseMessage> GetCategories()
+        public async Task<IHttpActionResult> GetCategories()
         {
-            var result = await categoryProductAppService.GetCategoriesAsync();
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            var result = await _appService.GetCategoriesAsync();
+            return Ok(result);
         }
 
         /// <summary>
@@ -63,10 +63,10 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("hierarchy")]
-        public async Task<HttpResponseMessage> GetCategoryHierarchy()
+        public async Task<IHttpActionResult> GetCategoryHierarchy()
         {
-            var result = await categoryProductAppService.GetCategoryHierarchyAsync();
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            var result = await _appService.GetCategoryHierarchyAsync();
+            return Ok(result);
         }
 
         /// <summary>
@@ -75,10 +75,10 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("top")]
-        public async Task<HttpResponseMessage> GetTopLevelCategories()
+        public async Task<IHttpActionResult> GetTopLevelCategories()
         {
-            var result = await categoryProductAppService.GetTopLevelCategoriesAsync();
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            var result = await _appService.GetTopLevelCategoriesAsync();
+            return Ok(result);
         }
 
         /// <summary>
@@ -88,10 +88,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("byparent/{id}")]
-        public async Task<HttpResponseMessage> GetCategoriesByParent(int id)
+        public async Task<IHttpActionResult> GetCategoriesByParent(int id)
         {
-            var result = await categoryProductAppService.GetCategoriesByParentAsync(id);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if(id < 1)
+            {
+                return BadRequest("Invalid Id.");
+            }
+            var result = await _appService.GetCategoriesByParentAsync(id);
+            return Ok(result);
         }
 
         /// <summary>
@@ -101,10 +105,15 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        public async Task<HttpResponseMessage> CreateCategory([FromBody] CategoryDto dto)
+        public async Task<IHttpActionResult> CreateCategory([FromBody] CategoryDto dto)
         {
-            var result = await categoryProductAppService.CreateCategoryAsync(dto);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if (dto == null)
+            {
+                return BadRequest("Invalid dto.");
+            }
+
+            var result = await _appService.CreateCategoryAsync(dto);
+            return Ok(result);
         }
 
 
@@ -115,10 +124,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("byid/{id}")]
-        public async Task<HttpResponseMessage> GetCategoryById(int id)
+        public async Task<IHttpActionResult> GetCategoryById(int id)
         {
-            var result = await categoryProductAppService.GetCategoryByIdAsync(id);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if (id < 1)
+            {
+                return BadRequest("Invalid Id.");
+            }
+            var result = await _appService.GetCategoryByIdAsync(id);
+            return Ok(result);
         }
 
         /// <summary>
@@ -128,10 +141,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("")]
-        public async Task<HttpResponseMessage> UpdateCategory([FromBody] CategoryDto dto)
+        public async Task<IHttpActionResult> UpdateCategory([FromBody] CategoryDto dto)
         {
-            var result = await categoryProductAppService.UpdateCategoryAsync(dto);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if (dto == null)
+            {
+                return BadRequest("Invalid dto.");
+            }
+            var result = await _appService.UpdateCategoryAsync(dto);
+            return Ok(result);
         }
 
         /// <summary>
@@ -141,10 +158,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public HttpResponseMessage DeleteCategory(int id)
+        public async Task<IHttpActionResult> DeleteCategory(int id)
         {
-            categoryProductAppService.DeleteCategory(id);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            if (id < 1)
+            {
+                return BadRequest("Invalid Id.");
+            }
+            _appService.DeleteCategory(id);
+            return Ok("Successfully deleted.");
         }
 
     }

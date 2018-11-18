@@ -27,11 +27,11 @@ catalogManager.controller('CategoryController', ['$scope', 'CMApi', '$http', '$l
         CMApi.CategoriesByParentId.query({ id: $scope.cm.id }).$promise.then(function (data) {
             if ($scope.CategoryList) $scope.CategoryList.splice(0, $scope.CategoryList.length);
             $scope.CreateCategoryList(data);
-        })
+        });
         CMApi.ProductByCategoryId.query({ categoryId: $scope.cm.id }).$promise.then(function (data) {
             if ($scope.ProductList) $scope.ProductList.splice(0, $scope.ProductList.length);
             $scope.CreateProductList(data);
-        })
+        });
     };
 
 

@@ -12,6 +12,8 @@ using CatalogManager.AppService.Dtos;
 using System.Web.Http.Hosting;
 using System.Web.Http;
 using System.Threading.Tasks;
+using NSubstitute;
+using System.Web.Http.Results;
 
 namespace CatalogManager.Test
 {
@@ -21,6 +23,13 @@ namespace CatalogManager.Test
     [TestClass]
     public class CategoryControllerTest
     {
+        private ICategoryProductAppService _appService;
+
+        public CategoryControllerTest()
+        {
+            _appService = Substitute.For<ICategoryProductAppService>();
+        }
+
         /// <summary>
         /// Gets the categories test.
         /// </summary>
@@ -28,24 +37,25 @@ namespace CatalogManager.Test
         public async Task GetCategoriesTest()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            var dtos = new List<CategoryDto>{new CategoryDto()
+            {
+                Name = "Test Category",
+                ParentCategoryId = 1,
+                Products = new List<ProductDto>()
+            } };
+            _appService.GetCategoriesAsync().Returns(dtos);
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             //Act
             var response = await controller.GetCategories();
+            var result = response as OkNegotiatedContentResult<IEnumerable<CategoryDto>>;
 
             //Assert
-            IEnumerable<CategoryDto> categories;
-
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<IEnumerable<CategoryDto>>(out categories));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(categories.Count() > 0);
-
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Count() > 0);
         }
 
         /// <summary>
@@ -55,26 +65,34 @@ namespace CatalogManager.Test
         public async Task GetCategoryHierarchyTest()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            var dtos = new List<CategoryDto>{new CategoryDto()
+            {
+                Id  = 1,
+                Name = "Test Category",
+                ParentCategoryId = null,
+                Products = new List<ProductDto>()},
+                new CategoryDto()
+            {
+                Id=2,
+                Name = "Test Category",
+                ParentCategoryId = 1,
+                Products = new List<ProductDto>()} };
+            _appService.GetCategoryHierarchyAsync().Returns(dtos);
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             //Act
             var response = await controller.GetCategoryHierarchy();
+            var result = response as OkNegotiatedContentResult<IEnumerable<CategoryDto>>;
 
             //Assert
-            IEnumerable<CategoryDto> categories;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<IEnumerable<CategoryDto>>(out categories));
-            var parentWithChild = categories.Where(x => x.ChildCategories.Count > 0);
-            Assert.IsNotNull(parentWithChild);
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(categories.Count() > 0);
-            Assert.IsTrue(categories.ElementAt(0).ParentCategoryId.HasValue == false);
-
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Count() > 0);
+            Assert.IsTrue(result.Content.Where(x=> x.Id == 1).Count() == 1);
+            Assert.IsTrue(result.Content.Where(x => x.Id == 2).Count() == 1);
+            Assert.IsTrue(result.Content.Where(x => x.ParentCategoryId == 1).Count() == 1);
         }
 
         /// <summary>
@@ -84,24 +102,26 @@ namespace CatalogManager.Test
         public async Task GetTopLevelCategoriesTest()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            var dtos = new List<CategoryDto>{new CategoryDto()
+            {
+                Id  = 1,
+                Name = "Test Category",
+                ParentCategoryId = null,
+                Products = new List<ProductDto>()} };
+            _appService.GetTopLevelCategoriesAsync().Returns(dtos);
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
             //Act
             var response = await controller.GetTopLevelCategories();
+            var result = response as OkNegotiatedContentResult<IEnumerable<CategoryDto>>;
 
             //Assert
-            IEnumerable<CategoryDto> categories;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<IEnumerable<CategoryDto>>(out categories));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(categories.Count() > 0);
-            Assert.IsTrue(categories.ElementAt(0).ParentCategoryId.HasValue == false);
-
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Count() > 0);
+            Assert.IsTrue(result.Content.ElementAt(0).ParentCategoryId == null);
         }
 
         /// <summary>
@@ -110,25 +130,29 @@ namespace CatalogManager.Test
         [TestMethod]
         public async Task GetCategoriesByParentShouldRetrunOneOrMore()
         {
-            // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            // Arrange
+            var parentId = 1;
+            var dtos = new List<CategoryDto>{
+                new CategoryDto()
+            {
+                Id=2,
+                Name = "Test Category",
+                ParentCategoryId = 1,
+                Products = new List<ProductDto>()} };
+            _appService.GetCategoriesByParentAsync(Arg.Any<int>()).Returns(dtos);
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            var parentId = 1;
 
             //Act
             var response = await controller.GetCategoriesByParent(parentId);
+            var result = response as OkNegotiatedContentResult<IEnumerable<CategoryDto>>;
 
             //Assert
-            IEnumerable<CategoryDto> categories;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<IEnumerable<CategoryDto>>(out categories));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(categories.Count() > 0);
-            Assert.IsTrue(categories.ElementAt(0).ParentCategoryId == parentId);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Count() > 0);
+            Assert.IsTrue(result.Content.ElementAt(0).ParentCategoryId == 1);
         }
 
         /// <summary>
@@ -138,31 +162,25 @@ namespace CatalogManager.Test
         public async Task CreateCategoryShouldCreateOne()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            var dto = new CategoryDto()
+            {
+                Id  = 1,
+                Name = "Test Category",
+                ParentCategoryId = null,
+                Products = new List<ProductDto>()};
+            _appService.CreateCategoryAsync(Arg.Any<CategoryDto>()).Returns(dto);
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            string name = string.Format("Test Category create at {0}", DateTime.Now);
-
-            var categoryDto = new CategoryDto()
-            {
-                Name = name,
-                ParentCategoryId = 1,
-                Products = new List<ProductDto>()
-            };
 
             //Act
-            var response = await controller.CreateCategory(categoryDto);
+            var response = await controller.CreateCategory(dto);
+            var result = response as OkNegotiatedContentResult<CategoryDto>;
 
             //Assert
-            CategoryDto category;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<CategoryDto>(out category));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(category.Id > 0);
-            Assert.IsTrue(category.Name == name);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Id == 1);            
         }
 
         /// <summary>
@@ -172,22 +190,27 @@ namespace CatalogManager.Test
         public async Task GetCategoryByIdShouldReturnOne()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            var id = 1;
+            var dto = new CategoryDto()
+            {
+                Id = 1,
+                Name = "Test Category",
+                ParentCategoryId = null,
+                Products = new List<ProductDto>()
+            };
+            _appService.GetCategoryByIdAsync(Arg.Any<int>()).Returns(dto);
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            int id = 1;
+
             //Act
             var response = await controller.GetCategoryById(id);
+            var result = response as OkNegotiatedContentResult<CategoryDto>;
 
             //Assert
-            CategoryDto category;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<CategoryDto>(out category));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(category.Id == id);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Id == id);
         }
 
         /// <summary>
@@ -197,30 +220,36 @@ namespace CatalogManager.Test
         public async Task UpdateCategoryShouldUpdate()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            var dto = new CategoryDto()
+            {
+                Id = 1,
+                Name = "Test Category",
+                ParentCategoryId = null,
+                Products = new List<ProductDto>()
+            };
+             
+            var updatedDto = new CategoryDto()
+            {
+                Id = 1,
+                Name = "Updated Test Category",
+                ParentCategoryId = null,
+                Products = new List<ProductDto>()
+            };
+            _appService.UpdateCategoryAsync(Arg.Any<CategoryDto>()).Returns(updatedDto);
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            string changedName = string.Format("Name changed at {0}", DateTime.Now);
-            int id = 1;
-            CategoryDto categoryToUpdate;
-            var response = await controller.GetCategoryById(id);
-            response.TryGetContentValue<CategoryDto>(out categoryToUpdate);
-            Assert.IsNotNull(categoryToUpdate);
-            categoryToUpdate.Name = changedName;
 
             //Act
-            response = await controller.UpdateCategory(categoryToUpdate);
+            var response = await controller.UpdateCategory(dto);
+            var result = response as OkNegotiatedContentResult<CategoryDto>;
 
             //Assert
-            CategoryDto category;
-            Assert.IsNotNull(response);
-            Assert.IsTrue(response.TryGetContentValue<CategoryDto>(out category));
-            Assert.IsTrue(response.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(category.Id == id);
-            Assert.IsTrue(category.Name == changedName);
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Content.Id == 1);
+            Assert.IsTrue(result.Content.Name == "Updated Test Category");
+           
         }
 
         /// <summary>
@@ -230,39 +259,20 @@ namespace CatalogManager.Test
         public async Task DeleteCategoryShouldDelete()
         {
             // Arrange 
-            var context = new CatalogManagerContext();
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-            ICategoryProductAppService appService = new CategoryProductAppService(unitOfWork);
-            var controller = new CategoryController(appService);
+            var id = 1;
+
+            var controller = new CategoryController(_appService);
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            string name = string.Format("Test Category to delete created at {0}", DateTime.Now);
-            int categoryId = 0;
-
-            var categoryDto = new CategoryDto()
-            {
-                Name = name,
-                ParentCategoryId = 1,
-                Products = new List<ProductDto>()
-            };
-
-            var response = await controller.CreateCategory(categoryDto);
-            CategoryDto categoryToDelete;
-            response.TryGetContentValue<CategoryDto>(out categoryToDelete);
-            categoryId = categoryToDelete.Id;
-            Assert.IsNotNull(categoryToDelete);
-            Assert.IsTrue(categoryToDelete.Id > 0);
 
             //Act
-            response = controller.DeleteCategory(categoryId);
-            var getResponse = await controller.GetCategoryById(categoryId);
+            var response = await controller.DeleteCategory(id);
+            var result = response as OkNegotiatedContentResult<string>;
 
             //Assert
-            CategoryDto category;
-            Assert.IsNotNull(getResponse);
-            Assert.IsTrue(!getResponse.TryGetContentValue<CategoryDto>(out category));
-            Assert.IsTrue(getResponse.StatusCode == HttpStatusCode.OK);
-            Assert.IsTrue(category==null);
+            Assert.IsNotNull(result.Content);
+            Assert.IsTrue(result.Content == "Successfully deleted.");
+
         }
     }
 }

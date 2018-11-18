@@ -37,8 +37,16 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<IEnumerable<CategoryDto>> GetTopLevelCategoriesAsync()
         {
-            var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategory == null);
-            return categories.ProjectedAsCollection<CategoryDto>();
+            try
+            {
+                var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategory == null);
+                return categories.ProjectedAsCollection<CategoryDto>();
+            }
+            catch (Exception ex)
+            {
+                // TO DO: Log exception
+                throw;
+            }
         }
         /// <summary>
         /// Gets the category hierarchy.
@@ -46,10 +54,18 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<IEnumerable<CategoryDto>> GetCategoryHierarchyAsync()
         {
-            var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategory == null);
-            var categoryDtos = categories.ProjectedAsCollection<CategoryDto>();
-            BuildCategoryHierarchy(categoryDtos);
-            return categoryDtos;
+            try
+            {
+                var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategory == null);
+                var categoryDtos = categories.ProjectedAsCollection<CategoryDto>();
+                BuildCategoryHierarchy(categoryDtos);
+                return categoryDtos;
+            }
+            catch (Exception ex)
+            {
+                // TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -58,11 +74,23 @@ namespace CatalogManager.AppService.Services
         /// <param name="categories">The categories.</param>
         private void BuildCategoryHierarchy(IEnumerable<CategoryDto> categories)
         {
-            foreach (var cat in categories)
+            if (categories != null || categories.Count() > 0)
             {
-                var childCategories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == cat.Id);
-                var dtos = childCategories.ProjectedAsCollection<CategoryDto>();
-                cat.ChildCategories = dtos;
+                try
+                {
+
+                    foreach (var cat in categories)
+                    {
+                        var childCategories = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == cat.Id);
+                        var dtos = childCategories.ProjectedAsCollection<CategoryDto>();
+                        cat.ChildCategories = dtos;
+                    }
+                }
+                catch (Exception)
+                {
+                    // TO DO: Log exception
+                    throw;
+                }
             }
         }
 
@@ -73,8 +101,21 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<IEnumerable<CategoryDto>> GetCategoriesByParentAsync(int parentId)
         {
-            var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategoryId == parentId);
-            return categories.ProjectedAsCollection<CategoryDto>();
+            if (parentId < 1)
+            {
+                throw new ArgumentException($"Invalid parentId. parentId:{parentId}");
+            }
+
+            try
+            {
+                var categories = (await unitOfWork.Categories.GetAllAsync()).Where(x => x.ParentCategoryId == parentId);
+                return categories.ProjectedAsCollection<CategoryDto>();
+            }
+            catch (Exception ex)
+            {
+                // TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -83,9 +124,17 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
         {
+            try
+            {
 
-            var categories = await unitOfWork.Categories.GetAllAsync();
-            return categories.ProjectedAsCollection<CategoryDto>();
+                var categories = await unitOfWork.Categories.GetAllAsync();
+                return categories.ProjectedAsCollection<CategoryDto>();
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -95,18 +144,30 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<CategoryDto> CreateCategoryAsync(CategoryDto dto)
         {
-            ICategoryFactory factory = new CategoryFactory();
-            var parentCategory = new Category();
-            var productList = new List<Product>();
+            if (dto == null)
+            {
+                throw new ArgumentNullException($"dto can't be null.");
+            }
+            try
+            {
+                ICategoryFactory factory = new CategoryFactory();
+                var parentCategory = new Category();
+                var productList = new List<Product>();
 
-            parentCategory = dto.ParentCategoryId.HasValue ? await unitOfWork.Categories.GetByIdAsync((int)dto.ParentCategoryId) : null;
+                parentCategory = dto.ParentCategoryId.HasValue ? await unitOfWork.Categories.GetByIdAsync((int)dto.ParentCategoryId) : null;
 
-            var category = factory.CreateCategory(dto.Name, parentCategory, productList);
+                var category = factory.CreateCategory(dto.Name, parentCategory, productList);
 
-            unitOfWork.Categories.Insert(category);
-            await unitOfWork.SaveAsync();
+                unitOfWork.Categories.Insert(category);
+                await unitOfWork.SaveAsync();
 
-            return category.ProjectedAs<CategoryDto>();
+                return category.ProjectedAs<CategoryDto>();
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -116,8 +177,20 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<CategoryDto> GetCategoryByIdAsync(int id)
         {
-            var category = await unitOfWork.Categories.GetByIdAsync(id);
-            return category.ProjectedAs<CategoryDto>();
+            if (id < 1)
+            {
+                throw new ArgumentException($"Invalid id. id:{id}");
+            }
+            try
+            {
+                var category = await unitOfWork.Categories.GetByIdAsync(id);
+                return category.ProjectedAs<CategoryDto>();
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -127,12 +200,23 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<CategoryDto> UpdateCategoryAsync(CategoryDto dto)
         {
-            var category = await unitOfWork.Categories.GetByIdAsync(dto.Id);
-            MaterializeCategory(category, dto);
-            unitOfWork.Categories.Update(category);
-            await unitOfWork.SaveAsync();
-            return category.ProjectedAs<CategoryDto>();
-
+            if (dto == null)
+            {
+                throw new ArgumentNullException($"dto can't be null.");
+            }
+            try
+            {
+                var category = await unitOfWork.Categories.GetByIdAsync(dto.Id);
+                MaterializeCategory(category, dto);
+                unitOfWork.Categories.Update(category);
+                await unitOfWork.SaveAsync();
+                return category.ProjectedAs<CategoryDto>();
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -141,17 +225,32 @@ namespace CatalogManager.AppService.Services
         /// <param name="id">The identifier.</param>
         public void DeleteCategory(int id)
         {
-            var category = unitOfWork.Categories.GetById(id);
-
-            // Delete children first
-            var children = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == id);
-            foreach (var cat in children)
+            if (id < 1)
             {
-                unitOfWork.Categories.Delete(cat);
+                throw new ArgumentException($"Invalid id. id:{id}");
             }
 
-            unitOfWork.Categories.Delete(category);
-            unitOfWork.Save();
+            try
+            {
+                var category = unitOfWork.Categories.GetById(id);
+                if (category != null)
+                {
+                    // Delete children first
+                    var children = unitOfWork.Categories.GetAll().Where(x => x.ParentCategoryId == id);
+                    foreach (var cat in children)
+                    {
+                        unitOfWork.Categories.Delete(cat);
+                    }
+
+                    unitOfWork.Categories.Delete(category);
+                    unitOfWork.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -161,15 +260,27 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<ProductDto> CreateProductAsync(ProductDto dto)
         {
-            IProductFactory factory = new ProductFactory();
-            var category = await unitOfWork.Categories.GetByIdAsync(dto.CategoryId);
+            if (dto == null)
+            {
+                throw new ArgumentNullException($"dto can't be null.");
+            }
+            try
+            {
+                IProductFactory factory = new ProductFactory();
+                var category = await unitOfWork.Categories.GetByIdAsync(dto.CategoryId);
 
-            var product = factory.CreateProduct(dto.Name,dto.Description, dto.Price,category);
+                var product = factory.CreateProduct(dto.Name, dto.Description, dto.Price, category);
 
-            unitOfWork.Products.Insert(product);
-            await unitOfWork.SaveAsync();
+                unitOfWork.Products.Insert(product);
+                await unitOfWork.SaveAsync();
 
-            return product.ProjectedAs<ProductDto>();
+                return product.ProjectedAs<ProductDto>();
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -179,8 +290,21 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<ProductDto> GetProductByIdAsync(int id)
         {
-            var product = await unitOfWork.Products.GetByIdAsync(id);
-            return product.ProjectedAs<ProductDto>();
+            if (id < 1)
+            {
+                throw new ArgumentException($"Invalid id. id:{id}");
+            }
+
+            try
+            {
+                var product = await unitOfWork.Products.GetByIdAsync(id);
+                return product.ProjectedAs<ProductDto>();
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -190,11 +314,23 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<ProductDto> UpdateProductAsync(ProductDto dto)
         {
-            var product = await unitOfWork.Products.GetByIdAsync(dto.Id);
-            MaterializeProduct(product, dto); 
-            unitOfWork.Products.Update(product);
-            await unitOfWork.SaveAsync();
-            return product.ProjectedAs<ProductDto>();
+            if (dto == null)
+            {
+                throw new ArgumentNullException($"dto can't be null.");
+            }
+            try
+            {
+                var product = await unitOfWork.Products.GetByIdAsync(dto.Id);
+                MaterializeProduct(product, dto);
+                unitOfWork.Products.Update(product);
+                await unitOfWork.SaveAsync();
+                return product.ProjectedAs<ProductDto>();
+            }
+            catch (Exception ex)
+            {
+                //TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -203,9 +339,21 @@ namespace CatalogManager.AppService.Services
         /// <param name="id">The identifier.</param>
         public async Task DeleteProductAsync(int id)
         {
-            var product = await unitOfWork.Products.GetByIdAsync(id);
-            unitOfWork.Products.Delete(product);
-            await unitOfWork.SaveAsync();
+            if (id < 1)
+            {
+                throw new ArgumentException($"Invalid id. id:{id}");
+            }
+            try
+            {
+                var product = await unitOfWork.Products.GetByIdAsync(id);
+                unitOfWork.Products.Delete(product);
+                await unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                // TO DO: Log exception
+                throw;
+            }
         }
 
         /// <summary>
@@ -215,8 +363,20 @@ namespace CatalogManager.AppService.Services
         /// <returns></returns>
         public async Task<IEnumerable<ProductDto>> GetProductsByCategoryAsync(int categoryId)
         {
-            var products = (await unitOfWork.Products.GetAllAsync()).Where(x => x.CategoryId == categoryId).ToList();
-            return products.ProjectedAsCollection<ProductDto>();
+            if (categoryId < 1)
+            {
+                throw new ArgumentException($"Invalid categoryId. CategoryId:{categoryId}");
+            }
+            try
+            {
+                var products = (await unitOfWork.Products.GetAllAsync()).Where(x => x.CategoryId == categoryId).ToList();
+                return products.ProjectedAsCollection<ProductDto>();
+            }
+            catch (Exception ex)
+            {
+                // TO DO: Log exception
+                throw;
+            }
         }
 
         #region private methods
@@ -246,7 +406,7 @@ namespace CatalogManager.AppService.Services
             product.Name = dto.Name;
             product.Description = dto.Description;
             product.Price = dto.Price;
-          
+
             var category = unitOfWork.Categories.GetById(dto.CategoryId);
             product.Category = category;
         }

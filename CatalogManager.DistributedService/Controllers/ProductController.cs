@@ -23,7 +23,7 @@ namespace CatalogManager.DistributedService.Controllers
         /// <summary>
         /// The category product application service
         /// </summary>
-        private readonly ICategoryProductAppService categoryProductAppService;
+        private readonly ICategoryProductAppService _appService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductController"/> class.
@@ -38,7 +38,7 @@ namespace CatalogManager.DistributedService.Controllers
         /// <param name="service">The service.</param>
         public ProductController(ICategoryProductAppService service)
         {
-            categoryProductAppService = service;
+            _appService = service;
         }
 
         /// <summary>
@@ -48,10 +48,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("bycategory/{categoryId}")]
-        public async Task<HttpResponseMessage> GetProductsByCategory(int categoryId)
+        public async Task<IHttpActionResult> GetProductsByCategory(int categoryId)
         {
-            var result = await categoryProductAppService.GetProductsByCategoryAsync(categoryId);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if (categoryId < 1)
+            {
+                return BadRequest("Invalid CategoryId.");
+            }
+            var result = await _appService.GetProductsByCategoryAsync(categoryId);
+            return Ok(result);
         }
 
         /// <summary>
@@ -61,10 +65,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("byid/{id}")]
-        public async Task<HttpResponseMessage> GetProductById(int id)
+        public async Task<IHttpActionResult> GetProductById(int id)
         {
-            var result = await categoryProductAppService.GetProductByIdAsync(id);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if (id < 1)
+            {
+                return BadRequest("Invalid Id.");
+            }
+            var result = await _appService.GetProductByIdAsync(id);
+            return Ok(result);
         }
 
         /// <summary>
@@ -74,10 +82,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        public async Task<HttpResponseMessage> CreateProduct([FromBody] ProductDto dto)
+        public async Task<IHttpActionResult> CreateProduct([FromBody] ProductDto dto)
         {
-            var result = await categoryProductAppService.CreateProductAsync(dto);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if (dto == null)
+            {
+                return BadRequest("Invalid dto.");
+            }
+            var result = await _appService.CreateProductAsync(dto);
+            return Ok(result);
         }
 
         /// <summary>
@@ -87,10 +99,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("")]
-        public async Task<HttpResponseMessage> UpdateProduct([FromBody] ProductDto dto)
+        public async Task<IHttpActionResult> UpdateProduct([FromBody] ProductDto dto)
         {
-            var result = await categoryProductAppService.UpdateProductAsync(dto);
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            if (dto == null)
+            {
+                return BadRequest("Invalid dto.");
+            }
+            var result = await _appService.UpdateProductAsync(dto);
+            return Ok(result);
         }
 
         /// <summary>
@@ -100,10 +116,14 @@ namespace CatalogManager.DistributedService.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public async Task<HttpResponseMessage> DeleteProduct(int id)
+        public async Task<IHttpActionResult> DeleteProduct(int id)
         {
-            await categoryProductAppService.DeleteProductAsync(id);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            if (id < 1)
+            {
+                return BadRequest("Invalid Id.");
+            }
+            await _appService.DeleteProductAsync(id);
+            return Ok("Successfully deleted.");
         }
 
     }

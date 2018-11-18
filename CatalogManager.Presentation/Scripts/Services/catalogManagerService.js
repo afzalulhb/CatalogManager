@@ -33,7 +33,7 @@
             ProductByCategoryId: $resource(apiroot + '/product/bycategory/:categoryId', {}, {
                 query: { method: 'GET', params: { categoryId: '@categoryId' }, isArray: true }
             })
-        }
+        };
     }]).
 factory('SyncApi', function () {
     var number = 1;
@@ -45,6 +45,6 @@ factory('SyncApi', function () {
     }
     return {
         getNumber: getNumber,
-        setNumber: setNumber,
-    }
+        setNumber: setNumber
+    };
 });
