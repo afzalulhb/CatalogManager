@@ -9,6 +9,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
+using Unity.RegistrationByConvention;
 
 namespace CatalogManager.Infrastructure.CrossCutting
 {
